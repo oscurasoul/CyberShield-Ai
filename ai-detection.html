@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Detection Methods - CyberShield AI</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <div class="container-app">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">🛡️</span>
+                    <span class="logo-text">CyberShield</span>
+                </div>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">🏠 Home</a>
+                <a href="types.html" class="nav-link">⚠️ Types</a>
+                <a href="ai-detection.html" class="nav-link active">🤖 AI Detection</a>
+                <a href="simulator.html" class="nav-link">🧪 Simulator</a>
+                <a href="dashboard.html" class="nav-link">📊 Dashboard</a>
+            </div>
+            <div class="sidebar-footer">
+                <button class="theme-btn" id="themeToggle">🌙</button>
+                <button class="lang-btn" id="langToggle">🌐</button>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <header class="navbar">
+                <div class="navbar-left">
+                    <button class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></button>
+                    <div class="breadcrumb">AI Detection Technology</div>
+                </div>
+                <div class="navbar-center">
+                    <div class="search-bar">
+                        <input type="text" placeholder="Search..." id="searchInput">
+                        <button class="search-btn">🔍</button>
+                    </div>
+                </div>
+                <div class="navbar-right">
+                    <button class="notification-btn"><span class="notification-icon">🔔</span><span class="notification-badge">3</span></button>
+                </div>
+            </header>
+
+            <section class="content-section fade-in">
+                <h1 class="section-title">AI Detection Methods</h1>
+                <p style="text-align: center; font-size: 16px; color: var(--text-secondary); margin-bottom: 40px;">How machine learning identifies harmful content</p>
+
+                <div class="tech-grid">
+                    <div class="tech-card glass slide-in">
+                        <div class="tech-icon">📝</div>
+                        <h3>Natural Language Processing (NLP)</h3>
+                        <p>Analyzes text structure and meaning to understand context and intent behind messages. Can detect subtle harassment patterns.</p>
+                    </div>
+
+                    <div class="tech-card glass slide-in">
+                        <div class="tech-icon">😊</div>
+                        <h3>Sentiment Analysis</h3>
+                        <p>Determines emotional tone of text. Identifies aggressive or hostile language patterns in real-time.</p>
+                    </div>
+
+                    <div class="tech-card glass slide-in">
+                        <div class="tech-icon">☢️</div>
+                        <h3>Toxicity Detection</h3>
+                        <p>Scores content for harmful, abusive, or toxic language. Works across multiple languages and dialects.</p>
+                    </div>
+
+                    <div class="tech-card glass slide-in">
+                        <div class="tech-icon">👎</div>
+                        <h3>Hate Speech Detection</h3>
+                        <p>Identifies content targeting protected groups based on race, religion, gender, or sexual orientation.</p>
+                    </div>
+
+                    <div class="tech-card glass slide-in">
+                        <div class="tech-icon">🚨</div>
+                        <h3>Threat Detection</h3>
+                        <p>Recognizes violent threats, self-harm references, and dangerous language patterns with high accuracy.</p>
+                    </div>
+
+                    <div class="tech-card glass slide-in">
+                        <div class="tech-icon">🔗</div>
+                        <h3>Context Analysis</h3>
+                        <p>Considers surrounding content, user history, and platform context for accurate classification.</p>
+                    </div>
+                </div>
+
+                <div class="ai-features" style="margin-top: 40px;">
+                    <h2 style="color: var(--primary-color); margin-bottom: 25px; font-size: 28px;">✨ AI Features</h2>
+                    <div class="feature-list">
+                        <div class="feature-item glass">
+                            <strong>✓ Real-time Analysis</strong>
+                            <p>Instant toxicity scoring as messages are typed or posted</p>
+                        </div>
+                        <div class="feature-item glass">
+                            <strong>✓ Multi-language Support</strong>
+                            <p>Works with English, Arabic, Spanish, French, and more</p>
+                        </div>
+                        <div class="feature-item glass">
+                            <strong>✓ Context Understanding</strong>
+                            <p>Learns from conversation history for better accuracy</p>
+                        </div>
+                        <div class="feature-item glass">
+                            <strong>✓ Pattern Recognition</strong>
+                            <p>Identifies coordinated harassment and organized campaigns</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cta-card glass" style="margin-top: 40px;">
+                    <h2>Try AI Detection</h2>
+                    <p>Test how our AI detects harmful content in real-time</p>
+                    <div class="button-group" style="display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap;">
+                        <a href="simulator.html" class="btn btn-primary">🧪 Try Simulator</a>
+                        <a href="ai-detection-sources.html" class="btn btn-primary">📚 Sources & Deep Dive</a>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-bottom">
+            <p>© 2024 CyberShield AI. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <style>
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .tech-card {
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+            animation: slideUp 0.6s ease-out backwards;
+        }
+
+        .tech-card:nth-child(1) { animation-delay: 0.1s; }
+        .tech-card:nth-child(2) { animation-delay: 0.2s; }
+        .tech-card:nth-child(3) { animation-delay: 0.3s; }
+        .tech-card:nth-child(4) { animation-delay: 0.4s; }
+        .tech-card:nth-child(5) { animation-delay: 0.5s; }
+        .tech-card:nth-child(6) { animation-delay: 0.6s; }
+
+        .tech-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .tech-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+        }
+
+        .tech-card p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-item {
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .feature-item strong {
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .feature-item p {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+    </style>
+
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/language.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
