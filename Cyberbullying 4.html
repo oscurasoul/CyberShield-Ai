@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberShield AI — Intelligent Cyberbullying Defense Ecosystem</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@300;400;500;600;700;800&family=Tajawal:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+:root{
+  --bg:#070b16; --bg-2:#0b1224; --panel:rgba(18,26,48,0.55); --panel-solid:#0e1730;
+  --glass:rgba(255,255,255,0.04); --glass-brd:rgba(255,255,255,0.09);
+  --txt:#e8eefc; --txt-2:#9fb0d4; --txt-3:#5d6f96;
+  --cy:#22d3ee; --cy-2:#06b6d4; --vi:#7c5cff; --vi-2:#a78bfa;
+  --lime:#a3e635; --amber:#fbbf24; --rose:#fb5e7e; --red:#ff4d6d; --green:#34d399;
+  --grad-1:linear-gradient(135deg,#22d3ee,#7c5cff); --grad-2:linear-gradient(135deg,#7c5cff,#fb5e7e);
+  --grad-3:linear-gradient(135deg,#06b6d4,#34d399); --grad-hot:linear-gradient(135deg,#fbbf24,#ff4d6d);
+  --r:20px; --r-sm:12px; --r-lg:28px;
+  --shadow:0 24px 60px -20px rgba(0,0,0,0.7); --glow-cy:0 0 40px rgba(34,211,238,0.25); --glow-vi:0 0 40px rgba(124,92,255,0.25);
+  --f-disp:'Sora',sans-serif; --f-body:'Space Grotesk',sans-serif; --f-mono:'JetBrains Mono',monospace; --f-ar:'Tajawal',sans-serif;
+}
+[data-theme="light"]{
+  --bg:#eef2fb; --bg-2:#e3e9f7; --panel:rgba(255,255,255,0.7); --panel-solid:#ffffff;
+  --glass:rgba(255,255,255,0.6); --glass-brd:rgba(20,30,60,0.08);
+  --txt:#0c1428; --txt-2:#475780; --txt-3:#8493b8;
+  --shadow:0 24px 60px -24px rgba(40,60,120,0.3); --glow-cy:0 0 40px rgba(34,211,238,0.18); --glow-vi:0 0 40px rgba(124,92,255,0.15);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--f-body);background:var(--bg);color:var(--txt);overflow-x:hidden;line-height:1.6;transition:background .4s,color .4s;-webkit-font-smoothing:antialiased}
+body[dir="rtl"]{font-family:var(--f-ar)}
+body[dir="rtl"] .en{display:none}
+body[dir="ltr"] .ar{display:none}
+h1,h2,h3,h4{font-family:var(--f-disp);font-weight:700;letter-spacing:-.02em}
+body[dir="rtl"] h1,body[dir="rtl"] h2,body[dir="rtl"] h3,body[dir="rtl"] h4{font-family:var(--f-ar)}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--cy),var(--vi));border-radius:10px}
+a{color:inherit;text-decoration:none}
+
+/* ---- atmosphere ---- */
+.bg-fx{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none}
+.bg-grid{position:absolute;inset:-50%;background-image:linear-gradient(rgba(124,92,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(34,211,238,.05) 1px,transparent 1px);background-size:54px 54px;mask-image:radial-gradient(ellipse 70% 60% at 50% 0%,#000 30%,transparent 75%);animation:gridPan 60s linear infinite}
+[data-theme="light"] .bg-grid{background-image:linear-gradient(rgba(124,92,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(34,211,238,.1) 1px,transparent 1px)}
+@keyframes gridPan{to{transform:translateY(54px)}}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.5;animation:orbFloat 18s ease-in-out infinite}
+.orb.a{width:480px;height:480px;background:radial-gradient(circle,#7c5cff,transparent 70%);top:-120px;left:-80px}
+.orb.b{width:520px;height:520px;background:radial-gradient(circle,#22d3ee,transparent 70%);top:30%;right:-160px;animation-delay:-6s}
+.orb.c{width:420px;height:420px;background:radial-gradient(circle,#fb5e7e,transparent 70%);bottom:-100px;left:30%;animation-delay:-11s;opacity:.35}
+@keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(40px,-50px) scale(1.1)}66%{transform:translate(-30px,30px) scale(.95)}}
+.noise{position:fixed;inset:0;z-index:-1;opacity:.035;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ---- nav ---- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;backdrop-filter:blur(22px);background:linear-gradient(180deg,rgba(7,11,22,.85),rgba(7,11,22,.4));border-bottom:1px solid var(--glass-brd);transition:all .3s}
+[data-theme="light"] .nav{background:linear-gradient(180deg,rgba(238,242,251,.9),rgba(238,242,251,.5))}
+.nav.scr{box-shadow:0 10px 40px -16px rgba(0,0,0,.5)}
+.nav-in{max-width:1440px;margin:0 auto;padding:0 24px;height:70px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{display:flex;align-items:center;gap:12px;font-family:var(--f-disp);font-weight:800;font-size:1.25rem}
+.logo-mark{width:42px;height:42px;border-radius:13px;background:var(--grad-1);display:grid;place-items:center;position:relative;box-shadow:var(--glow-cy);overflow:hidden}
+.logo-mark::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent,rgba(255,255,255,.5),transparent);transform:translateX(-100%);animation:sheen 4s ease-in-out infinite}
+@keyframes sheen{0%,60%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.logo-mark svg{width:24px;height:24px;color:#fff;z-index:1}
+.logo span b{background:var(--grad-1);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;gap:2px;background:var(--glass);border:1px solid var(--glass-brd);border-radius:100px;padding:5px}
+.nav-links a{padding:8px 15px;border-radius:100px;font-size:.83rem;font-weight:500;color:var(--txt-2);transition:all .2s;white-space:nowrap;cursor:pointer}
+.nav-links a:hover{color:var(--txt)}
+.nav-links a.on{color:#fff;background:var(--grad-1);box-shadow:var(--glow-cy)}
+.nav-act{display:flex;align-items:center;gap:8px}
+.ico-btn{width:42px;height:42px;border-radius:12px;border:1px solid var(--glass-brd);background:var(--glass);color:var(--txt-2);display:grid;place-items:center;cursor:pointer;transition:all .2s}
+.ico-btn:hover{color:var(--cy);border-color:var(--cy);transform:translateY(-2px)}
+.ico-btn svg{width:19px;height:19px}
+.lang-btn{font-family:var(--f-mono);font-weight:700;font-size:.8rem}
+.cta{padding:11px 20px;border-radius:12px;background:var(--grad-1);color:#fff;font-weight:600;font-size:.85rem;border:none;cursor:pointer;transition:all .25s;font-family:inherit;white-space:nowrap}
+.cta:hover{transform:translateY(-2px);box-shadow:var(--glow-cy)}
+.cta.ghost{background:var(--glass);border:1px solid var(--glass-brd);color:var(--txt)}
+.cta.ghost:hover{border-color:var(--vi);box-shadow:var(--glow-vi)}
+.burger{display:none}
+.drawer{position:fixed;inset:70px 0 0;z-index:999;background:var(--bg);padding:20px;flex-direction:column;gap:6px;overflow-y:auto;display:none}
+.drawer.open{display:flex}
+.drawer a{padding:15px;border-radius:12px;font-size:1.05rem;font-weight:600;border:1px solid var(--glass-brd);background:var(--glass)}
+
+/* ---- layout ---- */
+.wrap{max-width:1440px;margin:0 auto;padding:0 24px}
+section{padding:96px 0;position:relative}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 15px;border-radius:100px;background:var(--glass);border:1px solid var(--glass-brd);font-size:.74rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--cy);font-family:var(--f-mono)}
+.eyebrow svg{width:14px;height:14px}
+.sec-head{max-width:760px;margin:0 auto 56px;text-align:center}
+.sec-head h2{font-size:clamp(2rem,4.5vw,3.2rem);line-height:1.05;margin:18px 0 16px}
+.sec-head p{color:var(--txt-2);font-size:1.08rem}
+.grad-txt{background:var(--grad-1);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.grad-txt.hot{background:var(--grad-hot);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+
+.glass{background:var(--panel);backdrop-filter:blur(18px);border:1px solid var(--glass-brd);border-radius:var(--r);box-shadow:var(--shadow)}
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .7s cubic-bezier(.2,.7,.3,1),transform .7s cubic-bezier(.2,.7,.3,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* ---- hero ---- */
+.hero{min-height:100vh;display:flex;align-items:center;padding-top:70px;position:relative}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center}
+.hero-badge{margin-bottom:26px}
+.hero h1{font-size:clamp(2.6rem,6vw,4.6rem);line-height:1;font-weight:800;margin-bottom:22px}
+.hero h1 .ln{display:block;overflow:hidden}
+.hero h1 .ln span{display:block;animation:rise .9s cubic-bezier(.2,.8,.2,1) backwards}
+.hero h1 .ln:nth-child(2) span{animation-delay:.12s}
+.hero h1 .ln:nth-child(3) span{animation-delay:.24s}
+@keyframes rise{from{transform:translateY(110%)}to{transform:translateY(0)}}
+.hero-sub{font-size:1.18rem;color:var(--txt-2);max-width:520px;margin-bottom:34px;animation:fadeUp 1s .4s backwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;animation:fadeUp 1s .55s backwards}
+.btn-xl{padding:16px 28px;border-radius:14px;font-weight:600;font-size:1rem;border:none;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:10px;transition:all .25s}
+.btn-xl.pri{background:var(--grad-1);color:#fff}
+.btn-xl.pri:hover{transform:translateY(-3px);box-shadow:var(--glow-cy)}
+.btn-xl.sec{background:var(--glass);border:1px solid var(--glass-brd);color:var(--txt)}
+.btn-xl.sec:hover{transform:translateY(-3px);border-color:var(--vi);box-shadow:var(--glow-vi)}
+.btn-xl svg{width:19px;height:19px}
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px;animation:fadeUp 1s .7s backwards}
+.hstat{text-align:center}
+.hstat b{font-family:var(--f-mono);font-size:2.2rem;font-weight:700;background:var(--grad-1);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;display:block}
+.hstat span{font-size:.8rem;color:var(--txt-3)}
+
+/* hero visual: neural shield */
+.hero-vis{position:relative;height:460px;display:grid;place-items:center}
+.core{position:relative;width:300px;height:300px}
+.ring{position:absolute;inset:0;border-radius:50%;border:1.5px solid;animation:spin 22s linear infinite}
+.ring.r1{border-color:rgba(34,211,238,.35) rgba(34,211,238,.05) rgba(34,211,238,.05)}
+.ring.r2{inset:34px;border-color:rgba(124,92,255,.35) rgba(124,92,255,.05);animation-duration:16s;animation-direction:reverse}
+.ring.r3{inset:68px;border-color:rgba(251,94,126,.3) transparent;animation-duration:28s}
+@keyframes spin{to{transform:rotate(360deg)}}
+.core-c{position:absolute;inset:100px;border-radius:50%;background:var(--grad-1);display:grid;place-items:center;box-shadow:var(--glow-cy),inset 0 0 30px rgba(0,0,0,.3);animation:pulseC 4s ease-in-out infinite}
+@keyframes pulseC{0%,100%{box-shadow:0 0 40px rgba(34,211,238,.3)}50%{box-shadow:0 0 70px rgba(124,92,255,.55)}}
+.core-c svg{width:52px;height:52px;color:#fff}
+.node{position:absolute;width:48px;height:48px;border-radius:14px;background:var(--panel-solid);border:1px solid var(--glass-brd);display:grid;place-items:center;backdrop-filter:blur(10px);box-shadow:var(--shadow);animation:nodeF 6s ease-in-out infinite}
+.node svg{width:22px;height:22px}
+.node.n1{top:-10px;left:50%;margin-left:-24px;color:var(--cy)}
+.node.n2{top:35%;right:-20px;color:var(--vi-2);animation-delay:-1.5s}
+.node.n3{bottom:-10px;left:30%;color:var(--rose);animation-delay:-3s}
+.node.n4{top:40%;left:-24px;color:var(--green);animation-delay:-4.5s}
+@keyframes nodeF{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.scanbar{position:absolute;inset:0;border-radius:50%;overflow:hidden}
+.scanbar::before{content:"";position:absolute;left:0;right:0;height:2px;top:0;background:linear-gradient(90deg,transparent,var(--cy),transparent);animation:scan 3s linear infinite}
+@keyframes scan{to{top:100%}}
+
+/* ---- bento / feature grid ---- */
+.bento{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.bx{padding:26px;position:relative;overflow:hidden;cursor:default;transition:transform .35s,border-color .35s}
+.bx:hover{transform:translateY(-5px);border-color:rgba(34,211,238,.4)}
+.bx::before{content:"";position:absolute;inset:0;background:radial-gradient(400px circle at var(--mx,50%) var(--my,0%),rgba(34,211,238,.08),transparent 60%);opacity:0;transition:opacity .3s}
+.bx:hover::before{opacity:1}
+.bx.w2{grid-column:span 2}
+.bx-ico{width:50px;height:50px;border-radius:14px;display:grid;place-items:center;margin-bottom:16px;position:relative}
+.bx-ico svg{width:24px;height:24px;z-index:1}
+.bx h3{font-size:1.12rem;margin-bottom:9px}
+.bx p{color:var(--txt-2);font-size:.92rem}
+.bx .tag{position:absolute;top:18px;right:18px;font-family:var(--f-mono);font-size:.62rem;font-weight:700;padding:4px 9px;border-radius:7px;letter-spacing:.05em}
+body[dir="rtl"] .bx .tag{right:auto;left:18px}
+.tag.live{background:rgba(52,211,153,.13);color:var(--green)}
+.tag.new{background:rgba(124,92,255,.15);color:var(--vi-2)}
+.tag.soon{background:rgba(251,191,36,.13);color:var(--amber)}
+.i-cy{background:rgba(34,211,238,.12);color:var(--cy)} .i-vi{background:rgba(124,92,255,.14);color:var(--vi-2)}
+.i-rose{background:rgba(251,94,126,.12);color:var(--rose)} .i-amber{background:rgba(251,191,36,.12);color:var(--amber)}
+.i-green{background:rgba(52,211,153,.12);color:var(--green)}
+
+/* ---- tool shell ---- */
+.tool{max-width:980px;margin:0 auto}
+.tool-bar{display:flex;align-items:center;gap:12px;padding:18px 24px;border-bottom:1px solid var(--glass-brd)}
+.tool-bar .dot{width:11px;height:11px;border-radius:50%}
+.tool-bar .lbl{font-family:var(--f-mono);font-size:.82rem;color:var(--txt-2);margin-left:8px}
+body[dir="rtl"] .tool-bar .lbl{margin-left:0;margin-right:8px}
+.tool-body{padding:28px}
+textarea,input.tin{width:100%;background:var(--bg-2);border:1px solid var(--glass-brd);border-radius:var(--r-sm);color:var(--txt);font-family:inherit;font-size:1rem;padding:16px;resize:vertical;transition:border-color .2s,box-shadow .2s}
+textarea:focus,input.tin:focus{outline:none;border-color:var(--cy);box-shadow:0 0 0 4px rgba(34,211,238,.12)}
+.row{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
+.chip{padding:8px 14px;border-radius:100px;background:var(--glass);border:1px solid var(--glass-brd);font-size:.8rem;cursor:pointer;color:var(--txt-2);transition:all .2s;font-family:inherit}
+.chip:hover{border-color:var(--cy);color:var(--cy)}
+
+/* risk gauge */
+.gauge-wrap{display:grid;grid-template-columns:auto 1fr;gap:30px;align-items:center;margin-top:26px}
+@media(max-width:640px){.gauge-wrap{grid-template-columns:1fr}}
+.gauge{position:relative;width:180px;height:180px}
+.gauge svg{transform:rotate(-90deg)}
+.gauge .val{position:absolute;inset:0;display:grid;place-items:center;flex-direction:column;text-align:center}
+.gauge .val b{font-family:var(--f-mono);font-size:2.6rem;font-weight:700;line-height:1}
+.gauge .val span{font-size:.7rem;color:var(--txt-3);text-transform:uppercase;letter-spacing:.1em;display:block}
+.reasons{display:flex;flex-direction:column;gap:10px}
+.reason{display:flex;gap:12px;align-items:flex-start;padding:13px 15px;border-radius:var(--r-sm);background:var(--glass);border:1px solid var(--glass-brd);font-size:.9rem}
+.reason svg{width:18px;height:18px;flex-shrink:0;margin-top:2px}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-top:22px}
+.metric{padding:16px;border-radius:var(--r-sm);background:var(--glass);border:1px solid var(--glass-brd)}
+.metric .mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;font-size:.78rem;color:var(--txt-2)}
+.metric .mh b{font-family:var(--f-mono);font-size:1.05rem}
+.bar{height:7px;border-radius:5px;background:var(--bg-2);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:5px;width:0;transition:width 1s cubic-bezier(.2,.8,.2,1)}
+
+/* assistant typing */
+.assist{position:relative}
+.ghost-sugg{margin-top:14px;padding:16px;border-radius:var(--r-sm);background:linear-gradient(135deg,rgba(52,211,153,.07),rgba(34,211,238,.05));border:1px solid rgba(52,211,153,.25);font-size:.94rem;display:none}
+.ghost-sugg.show{display:block;animation:fadeUp .4s}
+.ghost-sugg .gh{display:flex;align-items:center;gap:8px;color:var(--green);font-weight:600;font-size:.82rem;margin-bottom:8px}
+.ghost-sugg .gh svg{width:16px;height:16px}
+
+/* moderator sim */
+.mod-card{padding:24px;border-radius:var(--r);background:var(--bg-2);border:1px solid var(--glass-brd);margin-bottom:18px}
+.mod-msg{padding:16px;border-radius:var(--r-sm);background:var(--panel-solid);border-left:3px solid var(--rose);margin-bottom:18px;font-size:.98rem}
+body[dir="rtl"] .mod-msg{border-left:none;border-right:3px solid var(--rose)}
+.mod-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.mod-btn{padding:15px;border-radius:var(--r-sm);border:1px solid var(--glass-brd);background:var(--glass);font-weight:600;cursor:pointer;font-family:inherit;color:var(--txt);transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:7px;font-size:.88rem}
+.mod-btn svg{width:22px;height:22px}
+.mod-btn[data-a="delete"]:hover{border-color:var(--red);color:var(--red)}
+.mod-btn[data-a="warn"]:hover{border-color:var(--amber);color:var(--amber)}
+.mod-btn[data-a="allow"]:hover{border-color:var(--green);color:var(--green)}
+.mod-verdict{margin-top:18px;padding:18px;border-radius:var(--r-sm);display:none}
+.mod-verdict.show{display:block;animation:fadeUp .4s}
+.verdict-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--glass-brd);font-size:.92rem}
+.verdict-row:last-child{border:none}
+.score-pill{font-family:var(--f-mono);font-weight:700;padding:14px 20px;border-radius:14px;text-align:center;margin-top:14px}
+
+/* victim assistant steps */
+.steps{display:flex;flex-direction:column;gap:0;position:relative}
+.steps::before{content:"";position:absolute;left:23px;top:24px;bottom:24px;width:2px;background:linear-gradient(var(--cy),var(--vi))}
+body[dir="rtl"] .steps::before{left:auto;right:23px}
+.step{display:flex;gap:20px;padding:14px 0;position:relative}
+.step-n{width:48px;height:48px;border-radius:14px;background:var(--panel-solid);border:1px solid var(--glass-brd);display:grid;place-items:center;flex-shrink:0;z-index:1;font-family:var(--f-mono);font-weight:700;color:var(--cy)}
+.step-body h4{font-size:1.05rem;margin-bottom:5px}
+.step-body p{color:var(--txt-2);font-size:.92rem}
+.support-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:22px}
+.support-c{padding:18px;border-radius:var(--r-sm);background:var(--glass);border:1px solid var(--glass-brd);display:flex;gap:13px;align-items:center}
+.support-c svg{width:22px;height:22px;flex-shrink:0}
+
+/* dashboards / heatmap */
+.dash{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}
+.card{padding:24px}
+.card.c4{grid-column:span 4}.card.c6{grid-column:span 6}.card.c8{grid-column:span 8}.card.c12{grid-column:span 12}
+.card h4{font-size:1rem;margin-bottom:4px}
+.card .ch-sub{font-size:.8rem;color:var(--txt-3);margin-bottom:18px}
+.chart-h{height:280px;position:relative}
+.heatmap{display:grid;grid-template-columns:repeat(12,1fr);gap:5px;margin-top:8px}
+.hm-cell{aspect-ratio:1;border-radius:5px;background:var(--glass);transition:transform .15s;cursor:pointer}
+.hm-cell:hover{transform:scale(1.25);z-index:2;outline:2px solid var(--cy)}
+.hm-legend{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:.75rem;color:var(--txt-3);font-family:var(--f-mono)}
+.hm-scale{display:flex;gap:3px}
+.hm-scale i{width:18px;height:10px;border-radius:3px}
+.kpi{display:flex;flex-direction:column;gap:6px}
+.kpi b{font-family:var(--f-mono);font-size:2.4rem;font-weight:700}
+.kpi .k-lbl{font-size:.82rem;color:var(--txt-2)}
+.kpi .k-d{font-size:.78rem;font-family:var(--f-mono);display:inline-flex;align-items:center;gap:4px}
+.k-up{color:var(--red)}.k-dn{color:var(--green)}
+
+/* platform compare table */
+.cmp{width:100%;border-collapse:collapse;font-size:.92rem;overflow:hidden;border-radius:var(--r)}
+.cmp th,.cmp td{padding:15px 16px;text-align:left;border-bottom:1px solid var(--glass-brd)}
+body[dir="rtl"] .cmp th,body[dir="rtl"] .cmp td{text-align:right}
+.cmp thead th{font-family:var(--f-mono);font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:var(--txt-3);background:var(--glass)}
+.cmp tbody tr{transition:background .2s}
+.cmp tbody tr:hover{background:var(--glass)}
+.cmp .plat{display:flex;align-items:center;gap:10px;font-weight:600}
+.cmp .plat .pd{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:.8rem}
+.rate{display:inline-flex;gap:3px}
+.rate i{width:9px;height:9px;border-radius:50%;background:var(--glass-brd)}
+.rate i.on{background:var(--cy)}
+
+/* case studies */
+.case{padding:0;overflow:hidden}
+.case-top{padding:22px 24px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.case-top h4{font-size:1.05rem}
+.case-sev{font-family:var(--f-mono);font-size:.7rem;font-weight:700;padding:5px 11px;border-radius:8px}
+.case-body{max-height:0;overflow:hidden;transition:max-height .45s ease}
+.case.open .case-body{max-height:600px}
+.case-inner{padding:0 24px 24px}
+.ba{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.ba-box{padding:15px;border-radius:var(--r-sm);font-size:.9rem}
+.ba-box.b{background:rgba(255,77,109,.07);border:1px solid rgba(255,77,109,.2)}
+.ba-box.a{background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.2)}
+.ba-box .bl{font-family:var(--f-mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px}
+.ba-box.b .bl{color:var(--red)}.ba-box.a .bl{color:var(--green)}
+
+/* hubs / ethics cards */
+.hub-tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:34px}
+.hub-tab{padding:11px 22px;border-radius:100px;background:var(--glass);border:1px solid var(--glass-brd);font-weight:600;cursor:pointer;color:var(--txt-2);font-family:inherit;font-size:.9rem;transition:all .2s}
+.hub-tab.on{background:var(--grad-1);color:#fff;border-color:transparent}
+.hub-pane{display:none}.hub-pane.on{display:block;animation:fadeUp .5s}
+.tip-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.tip{padding:22px;display:flex;gap:15px}
+.tip .tn{width:38px;height:38px;border-radius:11px;background:var(--grad-1);color:#fff;display:grid;place-items:center;font-weight:700;flex-shrink:0;font-family:var(--f-mono)}
+.tip h4{font-size:1rem;margin-bottom:5px}
+.tip p{color:var(--txt-2);font-size:.88rem}
+
+/* deepfake module */
+.df-stage{position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:16/10;background:linear-gradient(135deg,#0b1530,#1a1040);display:grid;place-items:center;border:1px solid var(--glass-brd)}
+.df-face{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#2a3458,#3a2858);display:grid;place-items:center;position:relative}
+.df-face svg{width:56px;height:56px;color:var(--txt-3)}
+.df-scan{position:absolute;inset:0}
+.df-scan::before{content:"";position:absolute;left:0;right:0;height:3px;top:0;background:linear-gradient(90deg,transparent,var(--rose),transparent);box-shadow:0 0 14px var(--rose);animation:scan 2.4s linear infinite}
+.df-box{position:absolute;border:2px solid var(--rose);border-radius:8px;animation:dfPulse 1.6s ease-in-out infinite}
+@keyframes dfPulse{0%,100%{opacity:.4}50%{opacity:1}}
+.df-verdict{position:absolute;bottom:14px;left:14px;right:14px;padding:12px 16px;border-radius:var(--r-sm);background:rgba(7,11,22,.85);backdrop-filter:blur(8px);border:1px solid rgba(255,77,109,.3);font-size:.85rem;display:flex;align-items:center;gap:10px}
+.df-verdict svg{width:18px;height:18px;color:var(--rose)}
+
+/* future vision */
+.vision{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+.vis-c{padding:28px;position:relative;overflow:hidden}
+.vis-c .vy{font-family:var(--f-mono);font-size:.72rem;color:var(--cy);letter-spacing:.1em;margin-bottom:12px}
+.vis-c h4{font-size:1.15rem;margin-bottom:10px}
+.vis-c p{color:var(--txt-2);font-size:.92rem}
+.vis-c .vline{position:absolute;top:0;left:0;height:3px;width:100%;background:var(--grad-1)}
+
+/* architecture diagram */
+.arch{display:flex;flex-direction:column;gap:14px}
+.arch-layer{padding:18px 22px;border-radius:var(--r-sm);border:1px solid var(--glass-brd);background:var(--glass);display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.arch-layer .al-lbl{font-family:var(--f-mono);font-size:.72rem;color:var(--cy);width:120px;flex-shrink:0;text-transform:uppercase;letter-spacing:.05em}
+.arch-layer .al-items{display:flex;gap:8px;flex-wrap:wrap}
+.arch-pill{padding:7px 13px;border-radius:9px;background:var(--bg-2);border:1px solid var(--glass-brd);font-size:.8rem;font-family:var(--f-mono);color:var(--txt-2)}
+
+/* footer */
+.foot{border-top:1px solid var(--glass-brd);padding:64px 0 28px;margin-top:40px}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:42px;margin-bottom:42px}
+.foot-grid p{color:var(--txt-2);font-size:.92rem;margin-top:16px;max-width:340px}
+.foot-col h5{font-family:var(--f-mono);font-size:.74rem;text-transform:uppercase;letter-spacing:.08em;color:var(--txt-3);margin-bottom:16px}
+.foot-col a{display:block;color:var(--txt-2);font-size:.9rem;margin-bottom:11px;transition:color .2s;cursor:pointer}
+.foot-col a:hover{color:var(--cy)}
+.foot-bot{padding-top:26px;border-top:1px solid var(--glass-brd);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;color:var(--txt-3);font-size:.82rem;font-family:var(--f-mono)}
+
+/* disclaimer banner */
+.disc{padding:14px 18px;border-radius:var(--r-sm);background:rgba(124,92,255,.07);border:1px solid rgba(124,92,255,.22);font-size:.84rem;color:var(--txt-2);display:flex;gap:11px;align-items:flex-start;margin-top:22px}
+.disc svg{width:18px;height:18px;color:var(--vi-2);flex-shrink:0;margin-top:1px}
+
+@media(max-width:1100px){
+  .nav-links{display:none}.burger{display:grid}
+  .hero-grid{grid-template-columns:1fr;gap:40px}.hero-vis{height:360px}
+  .bento{grid-template-columns:repeat(2,1fr)}.bx.w2{grid-column:span 2}
+  .card.c4,.card.c6,.card.c8{grid-column:span 12}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:640px){
+  .bento{grid-template-columns:1fr}.bx.w2{grid-column:span 1}
+  .hero-stats{grid-template-columns:1fr;gap:24px}
+  .mod-actions{grid-template-columns:1fr}.ba{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr}section{padding:64px 0}
+  .heatmap{grid-template-columns:repeat(8,1fr)}
+}
+</style>
+</head>
+<body data-theme="dark" dir="ltr">
+<div class="bg-fx"><div class="bg-grid"></div><div class="orb a"></div><div class="orb b"></div><div class="orb c"></div></div>
+<div class="noise"></div>
+<!-- ============ NAV ============ -->
+<nav class="nav" id="nav">
+  <div class="nav-in">
+    <a class="logo" onclick="go('top')">
+      <span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></span>
+      <span><b>CyberShield</b> AI</span>
+    </a>
+    <div class="nav-links" id="navlinks">
+      <a onclick="go('features')"><span class="en">Ecosystem</span><span class="ar">المنظومة</span></a>
+      <a onclick="go('predictor')"><span class="en">Predictor</span><span class="ar">التنبؤ</span></a>
+      <a onclick="go('conversation')"><span class="en">Conversation</span><span class="ar">المحادثة</span></a>
+      <a onclick="go('moderator')"><span class="en">Simulator</span><span class="ar">المحاكي</span></a>
+      <a onclick="go('victim')"><span class="en">Support</span><span class="ar">الدعم</span></a>
+      <a onclick="go('dashboard')"><span class="en">Heat Map</span><span class="ar">الخريطة</span></a>
+      <a onclick="go('compare')"><span class="en">Platforms</span><span class="ar">المنصات</span></a>
+      <a onclick="go('hubs')"><span class="en">Hub</span><span class="ar">المركز</span></a>
+    </div>
+    <div class="nav-act">
+      <button class="ico-btn" onclick="toggleTheme()" title="Theme"><i data-lucide="sun-moon"></i></button>
+      <button class="ico-btn lang-btn" onclick="toggleLang()" title="Language"><span class="en">ع</span><span class="ar">EN</span></button>
+      <button class="cta" onclick="go('predictor')"><span class="en">Try the AI</span><span class="ar">جرّب الذكاء</span></button>
+      <button class="ico-btn burger" onclick="document.getElementById('drawer').classList.toggle('open')"><i data-lucide="menu"></i></button>
+    </div>
+  </div>
+</nav>
+<div class="drawer" id="drawer">
+  <a onclick="go('features')"><span class="en">Ecosystem</span><span class="ar">المنظومة</span></a>
+  <a onclick="go('predictor')"><span class="en">Risk Predictor</span><span class="ar">متنبئ المخاطر</span></a>
+  <a onclick="go('conversation')"><span class="en">Conversation Analysis</span><span class="ar">تحليل المحادثة</span></a>
+  <a onclick="go('assistant')"><span class="en">Safe Writing Assistant</span><span class="ar">مساعد الكتابة الآمنة</span></a>
+  <a onclick="go('moderator')"><span class="en">Moderator Simulator</span><span class="ar">محاكي الإشراف</span></a>
+  <a onclick="go('victim')"><span class="en">Victim Support AI</span><span class="ar">دعم الضحايا</span></a>
+  <a onclick="go('dashboard')"><span class="en">Heat Map Dashboard</span><span class="ar">لوحة الخريطة الحرارية</span></a>
+  <a onclick="go('deepfake')"><span class="en">Deepfake Module</span><span class="ar">وحدة التزييف العميق</span></a>
+  <a onclick="go('compare')"><span class="en">Platform Comparison</span><span class="ar">مقارنة المنصات</span></a>
+  <a onclick="go('cases')"><span class="en">Case Simulator</span><span class="ar">محاكي الحالات</span></a>
+  <a onclick="go('hubs')"><span class="en">Parent & Teacher Hub</span><span class="ar">مركز الآباء والمعلمين</span></a>
+  <a onclick="go('ethics')"><span class="en">Ethics Center</span><span class="ar">مركز الأخلاقيات</span></a>
+  <a onclick="go('architecture')"><span class="en">Architecture</span><span class="ar">البنية</span></a>
+  <a onclick="go('future')"><span class="en">Future Vision</span><span class="ar">رؤية المستقبل</span></a>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-left">
+        <div class="eyebrow hero-badge"><i data-lucide="sparkles"></i><span class="en">Next-Gen AI Safety Ecosystem</span><span class="ar">منظومة أمان رقمي بالذكاء الاصطناعي</span></div>
+        <h1>
+          <span class="en">
+            <span class="ln"><span>Predict.</span></span>
+            <span class="ln"><span class="grad-txt">Prevent.</span></span>
+            <span class="ln"><span>Protect.</span></span>
+          </span>
+          <span class="ar">
+            <span class="ln"><span>تنبّأ.</span></span>
+            <span class="ln"><span class="grad-txt">امنع.</span></span>
+            <span class="ln"><span>احمِ.</span></span>
+          </span>
+        </h1>
+        <p class="hero-sub">
+          <span class="en">An intelligent ecosystem that doesn't just explain cyberbullying — it forecasts harm before a message is sent, coaches safer communication in real time, and supports victims, schools, and moderators with explainable AI.</span>
+          <span class="ar">منظومة ذكية لا تكتفي بشرح التنمر الإلكتروني — بل تتنبأ بالضرر قبل إرسال الرسالة، وتوجّه نحو تواصل أكثر أمانًا في الوقت الفعلي، وتدعم الضحايا والمدارس والمشرفين بذكاء اصطناعي قابل للتفسير.</span>
+        </p>
+        <div class="hero-btns">
+          <button class="btn-xl pri" onclick="go('predictor')"><i data-lucide="radar"></i><span class="en">Run Risk Predictor</span><span class="ar">شغّل متنبئ المخاطر</span></button>
+          <button class="btn-xl sec" onclick="go('features')"><i data-lucide="layout-grid"></i><span class="en">Explore Ecosystem</span><span class="ar">استكشف المنظومة</span></button>
+        </div>
+        <div class="hero-stats">
+          <div class="hstat"><b data-to="96">0</b><span class="en">% Detection Accuracy*</span><span class="ar">% دقة الكشف*</span></div>
+          <div class="hstat"><b data-to="15">0</b><span class="en">Intelligent Modules</span><span class="ar">وحدة ذكية</span></div>
+          <div class="hstat"><b data-to="2">0</b><span class="en">Languages, RTL-Ready</span><span class="ar">لغتان، تدعم RTL</span></div>
+        </div>
+      </div>
+      <div class="hero-vis">
+        <div class="core">
+          <div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div>
+          <div class="scanbar"></div>
+          <div class="core-c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <div class="node n1"><i data-lucide="brain-circuit"></i></div>
+          <div class="node n2"><i data-lucide="message-square-warning"></i></div>
+          <div class="node n3"><i data-lucide="scan-face"></i></div>
+          <div class="node n4"><i data-lucide="heart-handshake"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ECOSYSTEM BENTO ============ -->
+<section id="features">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><i data-lucide="boxes"></i><span class="en">The Ecosystem</span><span class="ar">المنظومة</span></span>
+      <h2><span class="en">Fifteen modules, <span class="grad-txt">one intelligence</span></span><span class="ar">خمس عشرة وحدة، <span class="grad-txt">ذكاء واحد</span></span></h2>
+      <p><span class="en">From prediction to prevention, simulation to support — every layer works together.</span><span class="ar">من التنبؤ إلى الوقاية، ومن المحاكاة إلى الدعم — كل طبقة تعمل معًا.</span></p>
+    </div>
+    <div class="bento reveal" id="bento">
+      <div class="bx glass w2" data-go="predictor"><span class="tag live">LIVE</span><div class="bx-ico i-cy"><i data-lucide="radar"></i></div><h3><span class="en">AI Risk Predictor</span><span class="ar">متنبئ المخاطر</span></h3><p><span class="en">Forecasts harm likelihood (0–100) before a message is posted and explains exactly why it's risky.</span><span class="ar">يتنبأ باحتمال الضرر (0–100) قبل نشر الرسالة ويشرح سبب خطورتها بدقة.</span></p></div>
+      <div class="bx glass" data-go="conversation"><span class="tag new">NEW</span><div class="bx-ico i-vi"><i data-lucide="messages-square"></i></div><h3><span class="en">Conversation Analysis</span><span class="ar">تحليل المحادثة</span></h3><p><span class="en">Scores whole chats: toxicity, respect, empathy & escalation.</span><span class="ar">يحلل المحادثات كاملة: السمّية والاحترام والتعاطف والتصعيد.</span></p></div>
+      <div class="bx glass" data-go="assistant"><span class="tag live">LIVE</span><div class="bx-ico i-green"><i data-lucide="pen-line"></i></div><h3><span class="en">Safe Writing Assistant</span><span class="ar">مساعد الكتابة الآمنة</span></h3><p><span class="en">Real-time safer rewrites as you type.</span><span class="ar">إعادة صياغة آمنة فورية أثناء الكتابة.</span></p></div>
+      <div class="bx glass" data-go="moderator"><span class="tag new">NEW</span><div class="bx-ico i-amber"><i data-lucide="gavel"></i></div><h3><span class="en">Moderator Simulator</span><span class="ar">محاكي الإشراف</span></h3><p><span class="en">Train your judgment vs the AI: delete, warn or allow.</span><span class="ar">درّب حكمك مقابل الذكاء: حذف، تحذير، أو سماح.</span></p></div>
+      <div class="bx glass" data-go="victim"><span class="tag live">LIVE</span><div class="bx-ico i-rose"><i data-lucide="heart-handshake"></i></div><h3><span class="en">Victim Support AI</span><span class="ar">مساعد دعم الضحايا</span></h3><p><span class="en">Step-by-step guidance to report, respond & cope safely.</span><span class="ar">إرشاد خطوة بخطوة للإبلاغ والرد والتأقلم بأمان.</span></p></div>
+      <div class="bx glass w2" data-go="dashboard"><span class="tag new">NEW</span><div class="bx-ico i-cy"><i data-lucide="map"></i></div><h3><span class="en">Heat Map & Institution Analytics</span><span class="ar">الخريطة الحرارية وتحليلات المؤسسات</span></h3><p><span class="en">Regional trends, severity patterns, platform comparisons, plus an anonymous school dashboard.</span><span class="ar">اتجاهات إقليمية وأنماط خطورة ومقارنات بين المنصات، مع لوحة مدرسية مجهولة الهوية.</span></p></div>
+      <div class="bx glass" data-go="emotion"><span class="tag new">NEW</span><div class="bx-ico i-vi"><i data-lucide="heart-pulse"></i></div><h3><span class="en">Emotional Impact Engine</span><span class="ar">محرك التأثير العاطفي</span></h3><p><span class="en">Humiliation, anxiety-trigger & exclusion probabilities.</span><span class="ar">احتمالات الإذلال وإثارة القلق والإقصاء.</span></p></div>
+      <div class="bx glass" data-go="deepfake"><span class="tag live">LIVE</span><div class="bx-ico i-rose"><i data-lucide="scan-face"></i></div><h3><span class="en">Deepfake Awareness</span><span class="ar">التوعية بالتزييف العميق</span></h3><p><span class="en">Spot manipulated media & learn how it works.</span><span class="ar">اكتشف الوسائط المتلاعب بها وتعلّم كيف تعمل.</span></p></div>
+      <div class="bx glass" data-go="compare"><span class="tag live">LIVE</span><div class="bx-ico i-green"><i data-lucide="layers-3"></i></div><h3><span class="en">Platform Comparison</span><span class="ar">مقارنة المنصات</span></h3><p><span class="en">Safety tools & moderation effectiveness, ranked.</span><span class="ar">أدوات الأمان وفعالية الإشراف، مرتبة.</span></p></div>
+      <div class="bx glass" data-go="cases"><span class="tag new">NEW</span><div class="bx-ico i-amber"><i data-lucide="folder-search"></i></div><h3><span class="en">Case Study Simulator</span><span class="ar">محاكي دراسات الحالة</span></h3><p><span class="en">Anonymized scenarios with improved rewrites.</span><span class="ar">سيناريوهات مجهولة مع نسخ محسّنة.</span></p></div>
+      <div class="bx glass" data-go="comment-shield"><span class="tag soon">SOON</span><div class="bx-ico i-cy"><i data-lucide="chrome"></i></div><h3><span class="en">AI Comment Shield</span><span class="ar">درع التعليقات</span></h3><p><span class="en">Browser-extension concept that filters & rewrites.</span><span class="ar">فكرة إضافة متصفح تُرشّح وتعيد الصياغة.</span></p></div>
+      <div class="bx glass" data-go="hubs"><span class="tag live">LIVE</span><div class="bx-ico i-vi"><i data-lucide="users-round"></i></div><h3><span class="en">Parent & Teacher Hub</span><span class="ar">مركز الآباء والمعلمين</span></h3><p><span class="en">Warning signs, monitoring & prevention.</span><span class="ar">علامات التحذير والمراقبة والوقاية.</span></p></div>
+      <div class="bx glass" data-go="ethics"><span class="tag live">LIVE</span><div class="bx-ico i-green"><i data-lucide="scale"></i></div><h3><span class="en">Ethics & Transparency</span><span class="ar">الأخلاقيات والشفافية</span></h3><p><span class="en">Bias, privacy & human oversight.</span><span class="ar">التحيّز والخصوصية والإشراف البشري.</span></p></div>
+      <div class="bx glass" data-go="architecture"><span class="tag new">NEW</span><div class="bx-ico i-amber"><i data-lucide="network"></i></div><h3><span class="en">System Architecture</span><span class="ar">بنية النظام</span></h3><p><span class="en">Scalable design, APIs & AI model stack.</span><span class="ar">تصميم قابل للتوسّع وواجهات ونماذج ذكاء.</span></p></div>
+    </div>
+  </div>
+</section>
+<!-- ============ RISK PREDICTOR ============ -->
+<section id="predictor">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><i data-lucide="radar"></i><span class="en">Feature 01 · Live</span><span class="ar">الميزة 01 · مباشر</span></span>
+      <h2><span class="en">AI Cyberbullying <span class="grad-txt">Risk Predictor</span></span><span class="ar">متنبئ <span class="grad-txt">مخاطر التنمر</span></span></h2>
+      <p><span class="en">Type a message as if you were about to post it. The model forecasts the harm risk and explains the reasoning — before any damage is done.</span><span class="ar">اكتب رسالة كأنك على وشك نشرها. يتنبأ النموذج بمستوى الخطورة ويشرح الأسباب — قبل وقوع أي ضرر.</span></p>
+    </div>
+    <div class="tool glass reveal">
+      <div class="tool-bar"><span class="dot" style="background:#fb5e7e"></span><span class="dot" style="background:#fbbf24"></span><span class="dot" style="background:#34d399"></span><span class="lbl">risk_predictor.ai · pre-publish guard</span></div>
+      <div class="tool-body">
+        <textarea id="predIn" rows="3" placeholder="Draft your message here..."></textarea>
+        <div class="row">
+          <span class="chip" onclick="setPred(this)">Nobody likes you, just give up</span>
+          <span class="chip" onclick="setPred(this)">I disagree with your point, here's why</span>
+          <span class="chip" onclick="setPred(this)">You're so stupid, everyone laughs at you</span>
+          <span class="chip" onclick="setPred(this)">Great work on the project today!</span>
+        </div>
+        <div class="row"><button class="btn-xl pri" onclick="runPredict()" style="padding:13px 24px"><i data-lucide="radar"></i><span class="en">Predict Risk</span><span class="ar">تنبّأ بالخطر</span></button></div>
+        <div id="predOut" style="display:none">
+          <div class="gauge-wrap">
+            <div class="gauge">
+              <svg width="180" height="180" viewBox="0 0 180 180">
+                <circle cx="90" cy="90" r="78" fill="none" stroke="var(--bg-2)" stroke-width="14"/>
+                <circle id="gaugeArc" cx="90" cy="90" r="78" fill="none" stroke="url(#gg)" stroke-width="14" stroke-linecap="round" stroke-dasharray="490" stroke-dashoffset="490"/>
+                <defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34d399"/><stop offset="0.5" stop-color="#fbbf24"/><stop offset="1" stop-color="#ff4d6d"/></linearGradient></defs>
+              </svg>
+              <div class="val"><div><b id="riskNum">0</b><span class="en">Risk Score</span><span class="ar">درجة الخطر</span></div></div>
+            </div>
+            <div class="reasons" id="reasons"></div>
+          </div>
+        </div>
+        <div class="disc"><i data-lucide="info"></i><span class="en">This live demo uses an on-page heuristic model for illustration. In production it calls a fine-tuned transformer classifier (see Architecture). It is educational, not a clinical or legal tool.</span><span class="ar">يستخدم هذا العرض نموذجًا تجريبيًا داخل الصفحة لأغراض توضيحية. في الإنتاج يستدعي مصنّف transformer مُدرّبًا (انظر البنية). هذه أداة تعليمية وليست أداة سريرية أو قانونية.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONVERSATION ANALYSIS ============ -->
+<section id="conversation">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><i data-lucide="messages-square"></i><span class="en">Feature 02 · New</span><span class="ar">الميزة 02 · جديد</span></span>
+      <h2><span class="en">Conversation-Level <span class="grad-txt">Analysis</span></span><span class="ar">تحليل على <span class="grad-txt">مستوى المحادثة</span></span></h2>
+      <p><span class="en">Paste a full chat (one line per message). The engine reads the whole thread and scores its social health, not just isolated words.</span><span class="ar">الصق محادثة كاملة (رسالة في كل سطر). يقرأ المحرّك الخيط بأكمله ويقيّم صحته الاجتماعية، لا الكلمات المعزولة فقط.</span></p>
+    </div>
+    <div class="tool glass reveal">
+      <div class="tool-bar"><span class="dot" style="background:#fb5e7e"></span><span class="dot" style="background:#fbbf24"></span><span class="dot" style="background:#34d399"></span><span class="lbl">conversation_analysis.ai · thread scoring</span></div>
+      <div class="tool-body">
+        <textarea id="convIn" rows="6" placeholder="A: hey did you even read the assignment?&#10;B: yeah why does it matter to you&#10;A: because you always mess everything up lol&#10;B: stop being so rude all the time&#10;A: maybe people would like you if you weren't useless"></textarea>
+        <div class="row"><button class="btn-xl pri" onclick="runConv()" style="padding:13px 24px"><i data-lucide="scan-search"></i><span class="en">Analyze Thread</span><span class="ar">حلّل الخيط</span></button>
+        <button class="btn-xl sec" onclick="loadConvSample()" style="padding:13px 24px"><i data-lucide="file-text"></i><span class="en">Load Sample</span><span class="ar">تحميل عيّنة</span></button></div>
+        <div class="metrics" id="convMetrics" style="display:none"></div>
+        <div id="convSummary" style="display:none;margin-top:18px" class="reason"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SAFE WRITING ASSISTANT ============ -->
+<section id="assistant">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><i data-lucide="pen-line"></i><span class="en">Feature 03 · Live</span><span class="ar">الميزة 03 · مباشر</span></span>
+      <h2><span class="en">Real-Time <span class="grad-txt">Safe Writing Assistant</span></span><span class="ar">مساعد <span class="grad-txt">الكتابة الآمنة</span> الفوري</span></h2>
+      <p><span class="en">As you type, the assistant detects harmful tone and instantly suggests a respectful rewrite that keeps your meaning.</span><span class="ar">أثناء كتابتك، يكتشف المساعد النبرة الضارّة ويقترح فورًا إعادة صياغة محترمة تحافظ على المعنى.</span></p>
+    </div>
+    <div class="tool glass reveal assist">
+      <div class="tool-bar"><span class="dot" style="background:#34d399"></span><span class="lbl">safe_writing.ai · typing in real time</span></div>
+      <div class="tool-body">
+        <textarea id="assistIn" rows="3" placeholder="Start typing a heated message... e.g. 'you are so stupid and nobody likes you'" oninput="liveAssist()"></textarea>
+        <div class="ghost-sugg" id="ghost">
+          <div class="gh"><i data-lucide="wand-2"></i><span class="en">Suggested safer rewrite</span><span class="ar">إعادة صياغة أكثر أمانًا</span></div>
+          <div id="ghostText"></div>
+          <div class="row"><button class="chip" onclick="applyGhost()" style="border-color:var(--green);color:var(--green)"><span class="en">✓ Use this</span><span class="ar">✓ استخدم هذا</span></button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EMOTIONAL IMPACT ENGINE ============ -->
+<section id="emotion">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><i data-lucide="heart-pulse"></i><span class="en">Feature 08 · New</span><span class="ar">الميزة 08 · جديد</span></span>
+      <h2><span class="en">Emotional <span class="grad-txt hot">Impact Engine</span></span><span class="ar">محرك <span class="grad-txt hot">التأثير العاطفي</span></span></h2>
+      <p><span class="en">Beyond toxicity — this engine estimates how a message is likely to make a target feel.</span><span class="ar">أبعد من السمّية — يقدّر هذا المحرّك كيف يُرجّح أن تجعل الرسالة الهدف يشعر.</span></p>
+    </div>
+    <div class="tool glass reveal">
+      <div class="tool-bar"><span class="dot" style="background:#7c5cff"></span><span class="lbl">emotional_impact.ai · affect estimation</span></div>
+      <div class="tool-body">
+        <textarea id="emoIn" rows="2" placeholder="e.g. 'everyone saw what you did, you should be embarrassed to show your face'"></textarea>
+        <div class="row"><button class="btn-xl pri" onclick="runEmotion()" style="padding:13px 24px"><i data-lucide="activity"></i><span class="en">Estimate Impact</span><span class="ar">قدّر التأثير</span></button></div>
+        <div class="metrics" id="emoOut" style="display:none"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============ MODERATOR SIMULATOR ============ -->
+<section id="moderator">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><i data-lucide="gavel"></i><span class="en">Feature 04 · Training Mode</span><span class="ar">الميزة 04 · وضع التدريب</span></span>
+      <h2><span class="en">AI Moderator <span class="grad-txt">Simulator</span></span><span class="ar">محاكي <span class="grad-txt">الإشراف</span></span></h2>
+      <p><span class="en">You're the moderator. Decide what to do with each piece of content, then compare your call against the AI's reasoning.</span><span class="ar">أنت المشرف. قرّر ما تفعله بكل محتوى، ثم قارن قرارك مع تحليل الذكاء الاصطناعي.</span></p>
+    </div>
+    <div class="tool glass reveal">
+      <div class="tool-bar"><span class="dot" style="background:#fbbf24"></span><span class="lbl">moderator_sim.ai · case <span id="caseNum">1</span> / 5 · <span class="en">your score</span><span class="ar">نتيجتك</span>: <span id="modScore">0</span></span></div>
+      <div class="tool-body">
+        <div class="mod-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+            <span style="font-family:var(--f-mono);font-size:.78rem;color:var(--txt-3)" id="modContext"></span>
+            <span class="case-sev" id="modCtxTag"></span>
+          </div>
+          <div class="mod-msg" id="modMsg"></div>
+          <div class="mod-actions">
+            <button class="mod-btn" data-a="delete" onclick="modDecide('delete')"><i data-lucide="trash-2"></i><span class="en">Delete</span><span class="ar">حذف</span></button>
+            <button class="mod-btn" data-a="warn" onclick="modDecide('warn')"><i data-lucide="alert-triangle"></i><span class="en">Warn</span><span class="ar">تحذير</span></button>
+            <button class="mod-btn" data-a="allow" onclick="modDecide('allow')"><i data-lucide="check"></i><span class="en">Allow</span><span class="ar">سماح</span></button>
+          </div>
+          <div class="mod-verdict glass" id="modVerdict">
+            <div class="verdict-row"><span class="en">Your decision</span><span class="ar">قرارك</span><b id="vYou"></b></div>
+            <div class="verdict-row"><span class="en">AI decision</span><span class="ar">قرار الذكاء</span><b id="vAi"></b></div>
+            <div class="verdict-row"><span class="en">AI reasoning</span><span class="ar">تعليل الذكاء</span><span id="vReason" style="max-width:60%;text-align:right;color:var(--txt-2);font-size:.85rem"></span></div>
+            <div class="score-pill" id="vMatch"></div>
+            <div class="row" style="justify-content:center;margin-top:14px"><button class="btn-xl pri" onclick="modNext()" style="padding:11px 22px"><span class="en">Next Case →</span><span class="ar">الحالة التالية ←</span></button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VICTIM SUPPORT ============ -->
+<section id="victim">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><i data-lucide="heart-handshake"></i><span class="en">Feature 05 · Live</span><span class="ar">الميزة 05 · مباشر</span></span>
+      <h2><span class="en">Victim Support <span class="grad-txt">AI Assistant</span></span><span class="ar">مساعد <span class="grad-txt">دعم الضحايا</span></span></h2>
+      <p><span class="en">If you're being targeted, you're not alone. Here's a calm, practical path forward — and reminders that real human support matters most.</span><span class="ar">إن كنت مستهدفًا، فأنت لست وحدك. إليك مسارًا هادئًا وعمليًا — مع التذكير بأن الدعم البشري الحقيقي هو الأهم.</span></p>
+    </div>
+    <div class="tool glass reveal">
+      <div class="tool-body">
+        <div class="steps">
+          <div class="step"><div class="step-n">1</div><div class="step-body"><h4><span class="en">Pause — don't reply in anger</span><span class="ar">توقّف — لا ترد بغضب</span></h4><p><span class="en">Responding usually feeds the situation. Take a breath; you control what happens next.</span><span class="ar">الرد غالبًا يغذّي الموقف. خذ نفسًا؛ أنت من يتحكم بما يحدث تاليًا.</span></p></div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-body"><h4><span class="en">Capture evidence</span><span class="ar">وثّق الأدلة</span></h4><p><span class="en">Screenshot messages, usernames, dates and links before blocking. Evidence makes reports far stronger.</span><span class="ar">التقط الرسائل وأسماء المستخدمين والتواريخ والروابط قبل الحظر. الأدلة تجعل البلاغات أقوى بكثير.</span></p></div></div>
+          <div class="step"><div class="step-n">3</div><div class="step-body"><h4><span class="en">Block & report on the platform</span><span class="ar">احظر وأبلغ على المنصة</span></h4><p><span class="en">Use the platform's report tools, then block the account. See the Platform Comparison for where each button lives.</span><span class="ar">استخدم أدوات الإبلاغ في المنصة، ثم احظر الحساب. راجع مقارنة المنصات لمعرفة مكان كل زر.</span></p></div></div>
+          <div class="step"><div class="step-n">4</div><div class="step-body"><h4><span class="en">Tell a trusted person</span><span class="ar">أخبر شخصًا تثق به</span></h4><p><span class="en">A parent, teacher, counselor or friend. Saying it out loud reduces its power and brings help.</span><span class="ar">والد، معلم، مرشد، أو صديق. قول الأمر بصوت عالٍ يقلل من سطوته ويجلب المساعدة.</span></p></div></div>
+          <div class="step"><div class="step-n">5</div><div class="step-body"><h4><span class="en">Protect your space</span><span class="ar">احمِ مساحتك</span></h4><p><span class="en">Tighten privacy settings, mute keywords, and take breaks from the app. Your wellbeing comes first.</span><span class="ar">شدّد إعدادات الخصوصية، واكتم الكلمات المزعجة، وخذ فترات راحة من التطبيق. عافيتك أولًا.</span></p></div></div>
+        </div>
+        <div class="support-grid">
+          <div class="support-c"><i data-lucide="message-circle-heart" style="color:var(--rose)"></i><div><b class="en">It's not your fault</b><b class="ar">الذنب ليس ذنبك</b><div style="font-size:.82rem;color:var(--txt-3)"><span class="en">Being targeted says nothing about your worth.</span><span class="ar">استهدافك لا يقول شيئًا عن قيمتك.</span></div></div></div>
+          <div class="support-c"><i data-lucide="phone-call" style="color:var(--cy)"></i><div><b class="en">Reach a helpline</b><b class="ar">تواصل مع خط مساعدة</b><div style="font-size:.82rem;color:var(--txt-3)"><span class="en">Local youth & crisis lines can talk it through.</span><span class="ar">خطوط دعم الشباب والأزمات المحلية يمكنها المساعدة.</span></div></div></div>
+          <div class="support-c"><i data-lucide="users" style="color:var(--green)"></i><div><b class="en">Lean on people</b><b class="ar">اعتمد على الناس</b><div style="font-size:.82rem;color:var(--txt-3)"><span class="en">Trusted humans, not just apps, help most.</span><span class="ar">البشر الموثوقون، لا التطبيقات وحدها، هم الأكثر عونًا.</span></div></div></div>
+        </div>
+        <div class="disc"><i data-lucide="heart"></i><span class="en">This assistant offers general, non-clinical guidance. If you ever feel unsafe or in crisis, please contact a trusted adult or a local emergency/crisis service right away.</span><span class="ar">يقدّم هذا المساعد إرشادًا عامًا غير سريري. إن شعرت يومًا بعدم الأمان أو بأزمة، تواصل فورًا مع بالغ موثوق أو خدمة طوارئ/أزمات محلية.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HEAT MAP + INSTITUTION DASHBOARD ============ -->
+<section id="dashboard">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><i data-lucide="map"></i><span class="en">Features 06 + 07</span><span class="ar">الميزتان 06 + 07</span></span>
+      <h2><span class="en">Heat Map & <span class="grad-txt">Institution Analytics</span></span><span class="ar">الخريطة الحرارية و<span class="grad-txt">تحليلات المؤسسات</span></span></h2>
+      <p><span class="en">A live-style command center: regional intensity, trend lines, severity mix, and an anonymized school view.</span><span class="ar">مركز قيادة تفاعلي: الكثافة الإقليمية وخطوط الاتجاه ومزيج الخطورة وعرض مدرسي مجهول الهوية.</span></p>
+    </div>
+    <div class="dash reveal">
+      <div class="card glass c4"><div class="kpi"><span class="k-lbl"><span class="en">Incidents flagged (30d)</span><span class="ar">بلاغات مرصودة (30 يومًا)</span></span><b data-to="48213" class="cnt">0</b><span class="k-d k-up"><i data-lucide="trending-up" style="width:14px;height:14px"></i> +12.4%</span></div></div>
+      <div class="card glass c4"><div class="kpi"><span class="k-lbl"><span class="en">Auto-prevented pre-post</span><span class="ar">مُنع تلقائيًا قبل النشر</span></span><b data-to="31077" class="cnt">0</b><span class="k-d k-dn"><i data-lucide="shield-check" style="width:14px;height:14px"></i> 64% caught</span></div></div>
+      <div class="card glass c4"><div class="kpi"><span class="k-lbl"><span class="en">Avg. response time</span><span class="ar">متوسط زمن الاستجابة</span></span><b>1.8<span style="font-size:1rem">s</span></b><span class="k-d k-dn"><i data-lucide="zap" style="width:14px;height:14px"></i> real-time</span></div></div>
+      <div class="card glass c8"><h4><span class="en">Regional Intensity Heat Map</span><span class="ar">الخريطة الحرارية للكثافة الإقليمية</span></h4><div class="ch-sub"><span class="en">Relative reporting density · illustrative</span><span class="ar">كثافة البلاغات النسبية · توضيحي</span></div><div class="heatmap" id="heatmap"></div><div class="hm-legend"><span class="en">low</span><span class="ar">منخفض</span><div class="hm-scale"><i style="background:rgba(34,211,238,.15)"></i><i style="background:rgba(34,211,238,.4)"></i><i style="background:rgba(124,92,255,.55)"></i><i style="background:rgba(251,94,126,.7)"></i><i style="background:rgba(255,77,109,.95)"></i></div><span class="en">high</span><span class="ar">مرتفع</span></div></div>
+      <div class="card glass c4"><h4><span class="en">Severity Mix</span><span class="ar">مزيج الخطورة</span></h4><div class="ch-sub"><span class="en">By incident class</span><span class="ar">حسب فئة البلاغ</span></div><div class="chart-h"><canvas id="sevChart"></canvas></div></div>
+      <div class="card glass c6"><h4><span class="en">12-Month Trend</span><span class="ar">اتجاه 12 شهرًا</span></h4><div class="ch-sub"><span class="en">Reports vs AI-prevented</span><span class="ar">البلاغات مقابل ما مُنع بالذكاء</span></div><div class="chart-h"><canvas id="trendChart"></canvas></div></div>
+      <div class="card glass c6"><h4><span class="en">Platform Comparison</span><span class="ar">مقارنة المنصات</span></h4><div class="ch-sub"><span class="en">Reported cyberbullying rate (%)</span><span class="ar">معدل التنمر المبلّغ عنه (%)</span></div><div class="chart-h"><canvas id="platChart"></canvas></div></div>
+      <div class="card glass c12" style="background:linear-gradient(135deg,rgba(124,92,255,.06),rgba(34,211,238,.04))">
+        <h4><span class="en">🏫 Institution Mode — Anonymous School Dashboard</span><span class="ar">🏫 وضع المؤسسة — لوحة مدرسية مجهولة</span></h4>
+        <div class="ch-sub"><span class="en">Aggregated, de-identified signals for educators — no individual student is ever named.</span><span class="ar">إشارات مجمّعة ومجهولة الهوية للمعلمين — لا يُذكر أي طالب باسمه أبدًا.</span></div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-top:8px">
+          <div class="metric"><div class="mh"><span class="en">Grade 7 risk index</span><span class="ar">مؤشر خطر الصف السابع</span><b style="color:var(--amber)">Moderate</b></div><div class="bar"><i style="width:54%;background:var(--amber)"></i></div></div>
+          <div class="metric"><div class="mh"><span class="en">Grade 8 risk index</span><span class="ar">مؤشر خطر الصف الثامن</span><b style="color:var(--green)">Low</b></div><div class="bar"><i style="width:28%;background:var(--green)"></i></div></div>
+          <div class="metric"><div class="mh"><span class="en">Grade 9 risk index</span><span class="ar">مؤشر خطر الصف التاسع</span><b style="color:var(--red)">Elevated</b></div><div class="bar"><i style="width:71%;background:var(--red)"></i></div></div>
+          <div class="metric"><div class="mh"><span class="en">Prevention engagement</span><span class="ar">التفاعل الوقائي</span><b style="color:var(--cy)">High</b></div><div class="bar"><i style="width:82%;background:var(--cy)"></i></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DEEPFAKE MODULE ============ -->
+<section id="deepfake">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><i data-lucide="scan-face"></i><span class="en">Feature 09 · Awareness</span><span class="ar">الميزة 09 · توعية</span></span>
+      <h2><span class="en">Deepfake & Image <span class="grad-txt hot">Abuse Awareness</span></span><span class="ar">التوعية بإساءة <span class="grad-txt hot">التزييف العميق والصور</span></span></h2>
+      <p><span class="en">Synthetic media is a fast-growing harassment vector. Learn how detection works and how deepfakes are made — in plain language.</span><span class="ar">الوسائط الاصطناعية وسيلة مضايقة سريعة النمو. تعرّف على كيفية عمل الكشف وكيف تُصنع التزييفات — بلغة بسيطة.</span></p>
+    </div>
+    <div class="dash reveal">
+      <div class="card glass c6">
+        <h4><span class="en">Forensic Detection Demo</span><span class="ar">عرض الكشف الجنائي</span></h4>
+        <div class="ch-sub"><span class="en">Simulated analysis of a manipulated portrait</span><span class="ar">تحليل محاكى لصورة متلاعب بها</span></div>
+        <div class="df-stage">
+          <div class="df-face"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg>
+            <div class="df-box" style="top:32%;left:36%;width:28%;height:30%"></div>
+          </div>
+          <div class="df-scan"></div>
+          <div class="df-verdict"><i data-lucide="alert-triangle"></i><span class="en"><b>AI-generated content detected</b> · 97.3% confidence · facial region inconsistency</span><span class="ar"><b>تم اكتشاف محتوى مولّد بالذكاء</b> · ثقة 97.3% · تعارض في منطقة الوجه</span></div>
+        </div>
+      </div>
+      <div class="card glass c6">
+        <h4><span class="en">How deepfakes work — simply</span><span class="ar">كيف تعمل التزييفات — ببساطة</span></h4>
+        <div class="steps" style="margin-top:6px">
+          <div class="step"><div class="step-n">A</div><div class="step-body"><h4><span class="en">Collect</span><span class="ar">جمع</span></h4><p><span class="en">Many photos/videos of a face are gathered from public posts.</span><span class="ar">تُجمع صور ومقاطع كثيرة لوجهٍ من منشورات عامة.</span></p></div></div>
+          <div class="step"><div class="step-n">B</div><div class="step-body"><h4><span class="en">Train</span><span class="ar">تدريب</span></h4><p><span class="en">A model learns the face, then swaps or animates it onto other footage.</span><span class="ar">يتعلّم نموذج الوجه ثم يستبدله أو يحرّكه على لقطات أخرى.</span></p></div></div>
+          <div class="step"><div class="step-n">C</div><div class="step-body"><h4><span class="en">Detect</span><span class="ar">كشف</span></h4><p><span class="en">Forensic AI spots tiny artifacts — lighting, blinking, edge blur — humans miss.</span><span class="ar">يكتشف الذكاء الجنائي آثارًا دقيقة — الإضاءة، الرمش، تموّج الحواف — يفوتها البشر.</span></p></div></div>
+        </div>
+        <div class="disc"><i data-lucide="shield-alert"></i><span class="en">If someone makes a fake of you: save the URL, report it as non-consensual/synthetic media, and tell a trusted adult. Don't engage with the poster.</span><span class="ar">إن صنع أحدهم تزييفًا لك: احفظ الرابط، وأبلغ عنه كمحتوى اصطناعي/غير موافَق عليه، وأخبر بالغًا موثوقًا. لا تتفاعل مع الناشر.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============ PLATFORM COMPARISON ============ -->
+<section id="compare">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><i data-lucide="layers-3"></i><span class="en">Feature 10</span><span class="ar">الميزة 10</span></span>
+      <h2><span class="en">Platform <span class="grad-txt">Comparison System</span></span><span class="ar">نظام <span class="grad-txt">مقارنة المنصات</span></span></h2>
+      <p><span class="en">How major platforms stack up on safety tooling, reporting flow, and moderation effectiveness.</span><span class="ar">كيف تتفاوت المنصات الكبرى في أدوات الأمان وسير الإبلاغ وفعالية الإشراف.</span></p>
+    </div>
+    <div class="glass reveal" style="overflow-x:auto;border-radius:var(--r)">
+      <table class="cmp">
+        <thead><tr>
+          <th><span class="en">Platform</span><span class="ar">المنصة</span></th>
+          <th><span class="en">Reporting Flow</span><span class="ar">سير الإبلاغ</span></th>
+          <th><span class="en">Safety Tools</span><span class="ar">أدوات الأمان</span></th>
+          <th><span class="en">Moderation</span><span class="ar">الإشراف</span></th>
+          <th><span class="en">Reported Rate</span><span class="ar">المعدل المبلّغ</span></th>
+        </tr></thead>
+        <tbody id="cmpBody"></tbody>
+      </table>
+    </div>
+    <div class="disc reveal"><i data-lucide="info"></i><span class="en">Ratings are an illustrative synthesis of public transparency reports and research; they are directional, not an official audit.</span><span class="ar">التقييمات تجميع توضيحي لتقارير الشفافية العامة والأبحاث؛ إرشادية وليست تدقيقًا رسميًا.</span></div>
+  </div>
+</section>
+
+<!-- ============ CASE STUDY SIMULATOR ============ -->
+<section id="cases">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><i data-lucide="folder-search"></i><span class="en">Feature 12</span><span class="ar">الميزة 12</span></span>
+      <h2><span class="en">Real Case <span class="grad-txt">Study Simulator</span></span><span class="ar">محاكي <span class="grad-txt">دراسات الحالة</span></span></h2>
+      <p><span class="en">Anonymized, composite scenarios. Open each to see why it's harmful and how it could be rewritten.</span><span class="ar">سيناريوهات مركّبة ومجهولة الهوية. افتح كلًا منها لترى لماذا هي ضارة وكيف يمكن إعادة صياغتها.</span></p>
+    </div>
+    <div class="reveal" style="display:flex;flex-direction:column;gap:14px;max-width:880px;margin:0 auto" id="caseList"></div>
+  </div>
+</section>
+
+<!-- ============ COMMENT SHIELD ============ -->
+<section id="comment-shield">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><i data-lucide="chrome"></i><span class="en">Feature 11 · Concept</span><span class="ar">الميزة 11 · مفهوم</span></span>
+      <h2><span class="en">AI <span class="grad-txt">Comment Shield</span></span><span class="ar">درع <span class="grad-txt">التعليقات</span> الذكي</span></h2>
+      <p><span class="en">A future browser extension that sits between you and the "post" button — filtering harm in, coaching kindness out.</span><span class="ar">إضافة متصفح مستقبلية تقف بينك وبين زر «نشر» — تُرشّح الضرر الوارد وتشجّع اللطف الصادر.</span></p>
+    </div>
+    <div class="vision reveal">
+      <div class="vis-c glass"><div class="vline"></div><div class="bx-ico i-cy"><i data-lucide="filter"></i></div><h4><span class="en">Inbound filter</span><span class="ar">مرشّح وارد</span></h4><p><span class="en">Blurs or collapses toxic replies before you read them, with a one-tap reveal.</span><span class="ar">يطمس أو يطوي الردود السامة قبل قراءتها، مع كشف بنقرة واحدة.</span></p></div>
+      <div class="vis-c glass"><div class="vline"></div><div class="bx-ico i-green"><i data-lucide="wand-2"></i></div><h4><span class="en">Outbound coach</span><span class="ar">مدرّب صادر</span></h4><p><span class="en">Intercepts your draft, suggests a calmer rewrite, you stay in control.</span><span class="ar">يعترض مسودتك ويقترح صياغة أهدأ، وتبقى أنت المتحكم.</span></p></div>
+      <div class="vis-c glass"><div class="vline"></div><div class="bx-ico i-vi"><i data-lucide="lock"></i></div><h4><span class="en">On-device privacy</span><span class="ar">خصوصية على الجهاز</span></h4><p><span class="en">Lightweight models run locally; raw text never leaves your browser.</span><span class="ar">نماذج خفيفة تعمل محليًا؛ النص الخام لا يغادر متصفحك.</span></p></div>
+      <div class="vis-c glass"><div class="vline"></div><div class="bx-ico i-amber"><i data-lucide="bell-ring"></i></div><h4><span class="en">Guardian alerts</span><span class="ar">تنبيهات الأوصياء</span></h4><p><span class="en">Opt-in summaries for guardians of younger users — patterns, never private content.</span><span class="ar">ملخصات اختيارية لأولياء المستخدمين الأصغر — أنماط فقط، لا محتوى خاص.</span></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PARENT/TEACHER HUB ============ -->
+<section id="hubs">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><i data-lucide="users-round"></i><span class="en">Feature 13</span><span class="ar">الميزة 13</span></span>
+      <h2><span class="en">Parent & Teacher <span class="grad-txt">Safety Hub</span></span><span class="ar">مركز <span class="grad-txt">أمان الآباء والمعلمين</span></span></h2>
+      <p><span class="en">Practical guidance for the adults who can make the biggest difference.</span><span class="ar">إرشاد عملي للبالغين الذين يمكنهم إحداث أكبر فرق.</span></p>
+    </div>
+    <div class="reveal">
+      <div class="hub-tabs">
+        <button class="hub-tab on" onclick="hub(this,'parents')"><span class="en">Parents</span><span class="ar">الآباء</span></button>
+        <button class="hub-tab" onclick="hub(this,'teachers')"><span class="en">Teachers</span><span class="ar">المعلمون</span></button>
+        <button class="hub-tab" onclick="hub(this,'signs')"><span class="en">Warning Signs</span><span class="ar">علامات التحذير</span></button>
+      </div>
+      <div class="hub-pane on" id="hub-parents"><div class="tip-grid">
+        <div class="tip glass"><div class="tn">1</div><div><h4><span class="en">Keep dialogue open</span><span class="ar">حافظ على حوار مفتوح</span></h4><p><span class="en">Make it safe to share online problems without fear of losing the device.</span><span class="ar">اجعل مشاركة مشاكل الإنترنت آمنة دون خوف من فقدان الجهاز.</span></p></div></div>
+        <div class="tip glass"><div class="tn">2</div><div><h4><span class="en">Boundaries, not bans</span><span class="ar">حدود لا حظر</span></h4><p><span class="en">Guided use builds judgment; total bans push activity into hiding.</span><span class="ar">الاستخدام الموجّه يبني الحكم؛ الحظر التام يدفع النشاط للاختفاء.</span></p></div></div>
+        <div class="tip glass"><div class="tn">3</div><div><h4><span class="en">Know the apps</span><span class="ar">اعرف التطبيقات</span></h4><p><span class="en">Understand each platform's risks and where its safety controls are.</span><span class="ar">افهم مخاطر كل منصة وأين توجد ضوابط أمانها.</span></p></div></div>
+        <div class="tip glass"><div class="tn">4</div><div><h4><span class="en">Model kindness</span><span class="ar">كن قدوة في اللطف</span></h4><p><span class="en">Children mirror how adults behave online — including in arguments.</span><span class="ar">يحاكي الأطفال سلوك البالغين على الإنترنت — حتى في النقاشات.</span></p></div></div>
+      </div></div>
+      <div class="hub-pane" id="hub-teachers"><div class="tip-grid">
+        <div class="tip glass"><div class="tn">1</div><div><h4><span class="en">Clear, consistent policy</span><span class="ar">سياسة واضحة ومتسقة</span></h4><p><span class="en">Define cyberbullying and its consequences; apply them fairly.</span><span class="ar">عرّف التنمر وعواقبه؛ وطبّقها بإنصاف.</span></p></div></div>
+        <div class="tip glass"><div class="tn">2</div><div><h4><span class="en">Teach digital citizenship</span><span class="ar">علّم المواطنة الرقمية</span></h4><p><span class="en">Weave empathy and online responsibility into everyday lessons.</span><span class="ar">ادمج التعاطف والمسؤولية الرقمية في الدروس اليومية.</span></p></div></div>
+        <div class="tip glass"><div class="tn">3</div><div><h4><span class="en">Safe reporting channels</span><span class="ar">قنوات إبلاغ آمنة</span></h4><p><span class="en">Offer anonymous routes; many students fear retaliation.</span><span class="ar">وفّر طرقًا مجهولة؛ كثير من الطلاب يخشون الانتقام.</span></p></div></div>
+        <div class="tip glass"><div class="tn">4</div><div><h4><span class="en">Use Institution Mode</span><span class="ar">استخدم وضع المؤسسة</span></h4><p><span class="en">Watch aggregated risk indices to act before incidents spread.</span><span class="ar">راقب مؤشرات الخطر المجمّعة للتحرك قبل انتشار الحوادث.</span></p></div></div>
+      </div></div>
+      <div class="hub-pane" id="hub-signs"><div class="tip-grid">
+        <div class="tip glass"><div class="tn">!</div><div><h4><span class="en">Device avoidance</span><span class="ar">تجنّب الأجهزة</span></h4><p><span class="en">Sudden anxiety around notifications or hiding the screen.</span><span class="ar">قلق مفاجئ من الإشعارات أو إخفاء الشاشة.</span></p></div></div>
+        <div class="tip glass"><div class="tn">!</div><div><h4><span class="en">Mood & sleep shifts</span><span class="ar">تغيّر المزاج والنوم</span></h4><p><span class="en">Irritability, withdrawal, or disrupted sleep after being online.</span><span class="ar">انفعال أو انسحاب أو اضطراب نوم بعد استخدام الإنترنت.</span></p></div></div>
+        <div class="tip glass"><div class="tn">!</div><div><h4><span class="en">Social pullback</span><span class="ar">انسحاب اجتماعي</span></h4><p><span class="en">Dropping friends, clubs or activities they used to enjoy.</span><span class="ar">ترك الأصدقاء أو الأنشطة التي كان يستمتع بها.</span></p></div></div>
+        <div class="tip glass"><div class="tn">!</div><div><h4><span class="en">Academic dip</span><span class="ar">تراجع دراسي</span></h4><p><span class="en">Falling grades or reluctance to attend school.</span><span class="ar">تراجع الدرجات أو التردد في الذهاب للمدرسة.</span></p></div></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ETHICS ============ -->
+<section id="ethics">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><i data-lucide="scale"></i><span class="en">Feature 14</span><span class="ar">الميزة 14</span></span>
+      <h2><span class="en">AI Ethics & <span class="grad-txt">Transparency Center</span></span><span class="ar">مركز <span class="grad-txt">الأخلاقيات والشفافية</span></span></h2>
+      <p><span class="en">Powerful safety AI must be accountable. These are the principles CyberShield is built on.</span><span class="ar">ذكاء الأمان القوي يجب أن يكون مسؤولًا. هذه هي المبادئ التي بُني عليها سايبرشيلد.</span></p>
+    </div>
+    <div class="tip-grid reveal">
+      <div class="tip glass"><div class="bx-ico i-vi" style="margin:0"><i data-lucide="lock"></i></div><div><h4><span class="en">Privacy by design</span><span class="ar">الخصوصية بالتصميم</span></h4><p><span class="en">Minimize data, anonymize aggregates, never store raw personal content unnecessarily.</span><span class="ar">تقليل البيانات وإخفاء هوية التجميعات وعدم تخزين المحتوى الشخصي الخام دون داعٍ.</span></p></div></div>
+      <div class="tip glass"><div class="bx-ico i-cy" style="margin:0"><i data-lucide="eye"></i></div><div><h4><span class="en">Explainability</span><span class="ar">قابلية التفسير</span></h4><p><span class="en">Every score comes with reasons. Users see why content was flagged.</span><span class="ar">كل درجة مصحوبة بأسباب. يرى المستخدمون لماذا وُسم المحتوى.</span></p></div></div>
+      <div class="tip glass"><div class="bx-ico i-amber" style="margin:0"><i data-lucide="git-compare"></i></div><div><h4><span class="en">Bias auditing</span><span class="ar">تدقيق التحيّز</span></h4><p><span class="en">Continuous testing across languages, dialects and cultures, including Arabic.</span><span class="ar">اختبار مستمر عبر اللغات واللهجات والثقافات، بما فيها العربية.</span></p></div></div>
+      <div class="tip glass"><div class="bx-ico i-green" style="margin:0"><i data-lucide="user-check"></i></div><div><h4><span class="en">Human oversight</span><span class="ar">إشراف بشري</span></h4><p><span class="en">AI assists; trained humans handle appeals and final calls.</span><span class="ar">الذكاء يساعد؛ والبشر المدربون يتولّون الطعون والقرارات النهائية.</span></p></div></div>
+      <div class="tip glass"><div class="bx-ico i-vi" style="margin:0"><i data-lucide="globe"></i></div><div><h4><span class="en">Standards-aligned</span><span class="ar">متوافق مع المعايير</span></h4><p><span class="en">Guided by frameworks like the EU AI Act & UNESCO AI ethics.</span><span class="ar">مسترشد بأطر مثل قانون الاتحاد الأوروبي للذكاء وأخلاقيات اليونسكو.</span></p></div></div>
+      <div class="tip glass"><div class="bx-ico i-rose" style="margin:0"><i data-lucide="refresh-cw"></i></div><div><h4><span class="en">Continuous learning</span><span class="ar">تعلّم مستمر</span></h4><p><span class="en">Models retrain on diverse data to track evolving harassment tactics.</span><span class="ar">إعادة تدريب على بيانات متنوعة لمواكبة تكتيكات المضايقة المتطورة.</span></p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ARCHITECTURE ============ -->
+<section id="architecture">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><i data-lucide="network"></i><span class="en">System Design</span><span class="ar">تصميم النظام</span></span>
+      <h2><span class="en">Scalable <span class="grad-txt">Architecture</span></span><span class="ar">بنية <span class="grad-txt">قابلة للتوسّع</span></span></h2>
+      <p><span class="en">A layered, event-driven design — from edge inference to a learning data loop. Full spec in the companion document.</span><span class="ar">تصميم متعدد الطبقات قائم على الأحداث — من الاستدلال الطرفي إلى حلقة بيانات متعلّمة. المواصفات الكاملة في المستند المرافق.</span></p>
+    </div>
+    <div class="glass reveal" style="padding:28px">
+      <div class="arch">
+        <div class="arch-layer"><span class="al-lbl">Client</span><div class="al-items"><span class="arch-pill">React + Vite (PWA)</span><span class="arch-pill">RTL/i18n</span><span class="arch-pill">Comment Shield ext.</span><span class="arch-pill">On-device tiny model</span></div></div>
+        <div class="arch-layer"><span class="al-lbl">Edge / API</span><div class="al-items"><span class="arch-pill">API Gateway</span><span class="arch-pill">Auth (OAuth2/JWT)</span><span class="arch-pill">Rate limiting</span><span class="arch-pill">GraphQL + REST</span></div></div>
+        <div class="arch-layer"><span class="al-lbl">AI Services</span><div class="al-items"><span class="arch-pill">Toxicity classifier</span><span class="arch-pill">Risk predictor</span><span class="arch-pill">Conversation scorer</span><span class="arch-pill">Emotion engine</span><span class="arch-pill">Deepfake CV</span><span class="arch-pill">Rewrite LLM</span></div></div>
+        <div class="arch-layer"><span class="al-lbl">Streaming</span><div class="al-items"><span class="arch-pill">Kafka event bus</span><span class="arch-pill">Real-time scoring</span><span class="arch-pill">Alert workers</span></div></div>
+        <div class="arch-layer"><span class="al-lbl">Data</span><div class="al-items"><span class="arch-pill">PostgreSQL</span><span class="arch-pill">Redis cache</span><span class="arch-pill">Vector DB (pgvector)</span><span class="arch-pill">ClickHouse analytics</span><span class="arch-pill">S3 evidence vault</span></div></div>
+        <div class="arch-layer"><span class="al-lbl">MLOps</span><div class="al-items"><span class="arch-pill">Feature store</span><span class="arch-pill">Bias/eval harness</span><span class="arch-pill">Human-review loop</span><span class="arch-pill">Model registry</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FUTURE VISION ============ -->
+<section id="future">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><i data-lucide="telescope"></i><span class="en">Feature 15</span><span class="ar">الميزة 15</span></span>
+      <h2><span class="en">The Future of a <span class="grad-txt">Safe Internet</span></span><span class="ar">مستقبل <span class="grad-txt">إنترنت آمن</span></span></h2>
+      <p><span class="en">Where AI-powered safety ecosystems are heading — proactive, personal, and humane.</span><span class="ar">إلى أين تتجه منظومات الأمان بالذكاء الاصطناعي — استباقية وشخصية وإنسانية.</span></p>
+    </div>
+    <div class="vision reveal">
+      <div class="vis-c glass"><div class="vline"></div><div class="vy">2026 →</div><h4><span class="en">Pre-emptive safety</span><span class="ar">أمان استباقي</span></h4><p><span class="en">Harm is predicted and defused at the point of typing, everywhere.</span><span class="ar">يُتنبأ بالضرر ويُنزع فتيله عند الكتابة، في كل مكان.</span></p></div>
+      <div class="vis-c glass"><div class="vline"></div><div class="vy">2028 →</div><h4><span class="en">Personal AI guardians</span><span class="ar">أوصياء ذكاء شخصيون</span></h4><p><span class="en">Consent-based companions that protect wellbeing across platforms.</span><span class="ar">رفقاء قائمون على الموافقة يحمون العافية عبر المنصات.</span></p></div>
+      <div class="vis-c glass"><div class="vline"></div><div class="vy">2030 →</div><h4><span class="en">Interoperable trust</span><span class="ar">ثقة قابلة للتشغيل البيني</span></h4><p><span class="en">Shared safety signals let platforms cooperate against networked abuse.</span><span class="ar">إشارات أمان مشتركة تتيح تعاون المنصات ضد الإساءة المنظمة.</span></p></div>
+      <div class="vis-c glass"><div class="vline"></div><div class="vy">Always</div><h4><span class="en">Humans in the loop</span><span class="ar">البشر في الحلقة</span></h4><p><span class="en">Technology amplifies empathy — it never replaces human care.</span><span class="ar">التقنية تضخّم التعاطف — ولا تحل أبدًا محل الرعاية البشرية.</span></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="logo" onclick="go('top')"><span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></span><span><b>CyberShield</b> AI</span></a>
+        <p><span class="en">An intelligent ecosystem for predicting, preventing, and responding to cyberbullying — built with explainable, human-centered AI.</span><span class="ar">منظومة ذكية للتنبؤ بالتنمر الإلكتروني والوقاية منه والاستجابة له — مبنية بذكاء اصطناعي قابل للتفسير ومتمحور حول الإنسان.</span></p>
+      </div>
+      <div class="foot-col"><h5><span class="en">Intelligence</span><span class="ar">الذكاء</span></h5><a onclick="go('predictor')"><span class="en">Risk Predictor</span><span class="ar">متنبئ المخاطر</span></a><a onclick="go('conversation')"><span class="en">Conversation Analysis</span><span class="ar">تحليل المحادثة</span></a><a onclick="go('assistant')"><span class="en">Writing Assistant</span><span class="ar">مساعد الكتابة</span></a><a onclick="go('emotion')"><span class="en">Emotional Impact</span><span class="ar">التأثير العاطفي</span></a></div>
+      <div class="foot-col"><h5><span class="en">Tools</span><span class="ar">الأدوات</span></h5><a onclick="go('moderator')"><span class="en">Moderator Simulator</span><span class="ar">محاكي الإشراف</span></a><a onclick="go('victim')"><span class="en">Victim Support</span><span class="ar">دعم الضحايا</span></a><a onclick="go('dashboard')"><span class="en">Heat Map</span><span class="ar">الخريطة الحرارية</span></a><a onclick="go('cases')"><span class="en">Case Simulator</span><span class="ar">محاكي الحالات</span></a></div>
+      <div class="foot-col"><h5><span class="en">Trust</span><span class="ar">الثقة</span></h5><a onclick="go('ethics')"><span class="en">Ethics Center</span><span class="ar">مركز الأخلاقيات</span></a><a onclick="go('architecture')"><span class="en">Architecture</span><span class="ar">البنية</span></a><a onclick="go('hubs')"><span class="en">Parent & Teacher Hub</span><span class="ar">مركز الآباء والمعلمين</span></a><a onclick="go('future')"><span class="en">Future Vision</span><span class="ar">رؤية المستقبل</span></a></div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 CyberShield AI · <span class="en">Educational prototype</span><span class="ar">نموذج تعليمي</span></span>
+      <span class="en">Built for a safer, kinder internet.</span><span class="ar">بُني من أجل إنترنت أكثر أمانًا ولطفًا.</span>
+    </div>
+  </div>
+</footer>
+<script>
+lucide.createIcons();
+/* ---------- nav / theme / lang ---------- */
+function go(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'});document.getElementById('drawer').classList.remove('open');}
+document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
+function toggleTheme(){const b=document.body,n=b.dataset.theme==='dark'?'light':'dark';b.dataset.theme=n;localStorage.setItem('cs_theme',n);buildCharts();}
+function toggleLang(){const b=document.body,n=b.dir==='ltr'?'rtl':'ltr';b.dir=n;b.lang=n==='rtl'?'ar':'en';localStorage.setItem('cs_lang',n);lucide.createIcons();buildCharts();}
+(function(){const t=localStorage.getItem('cs_theme');if(t)document.body.dataset.theme=t;const l=localStorage.getItem('cs_lang');if(l){document.body.dir=l;document.body.lang=l==='rtl'?'ar':'en';}})();
+window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scr',scrollY>40);
+  let cur='';document.querySelectorAll('section[id]').forEach(s=>{if(scrollY>=s.offsetTop-120)cur=s.id;});
+  document.querySelectorAll('#navlinks a').forEach(a=>{a.classList.toggle('on',a.getAttribute('onclick')?.includes("'"+cur+"'"));});});
+
+/* ---------- reveal + counters ---------- */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');e.target.querySelectorAll('[data-to]').forEach(runCount);io.unobserve(e.target);}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+document.querySelectorAll('.hero [data-to]').forEach(runCount);
+function runCount(el){const to=+el.dataset.to;let c=0,step=to/55;const big=to>1000;const t=setInterval(()=>{c+=step;if(c>=to){el.textContent=big?to.toLocaleString():to;clearInterval(t);}else el.textContent=big?Math.floor(c).toLocaleString():Math.floor(c);},22);}
+
+/* ---------- bento hover glow ---------- */
+document.querySelectorAll('.bx').forEach(bx=>bx.addEventListener('mousemove',e=>{const r=bx.getBoundingClientRect();bx.style.setProperty('--mx',(e.clientX-r.left)+'px');bx.style.setProperty('--my',(e.clientY-r.top)+'px');}));
+
+/* ---------- shared lexicon ---------- */
+const LEX={severe:['kill yourself','kys','end it all','you should die','nobody would miss you'],
+  high:['stupid','idiot','worthless','loser','pathetic','ugly','freak','moron','retard','disgusting','hate you','useless','kill','die'],
+  med:['shut up','go away','dumb','annoying','nobody likes','everyone hates','no one cares','embarrass','laugh at you','give up','useless'],
+  threat:['kill','hurt you','find you','coming for you','watch your back','i know where'],
+  exclude:['nobody','everyone','no one likes','don\'t belong','not wanted','go away','leave']};
+function scan(t){t=' '+t.toLowerCase()+' ';let s=0,hits=[];
+  LEX.severe.forEach(w=>{if(t.includes(w)){s=Math.max(s,98);hits.push({w,t:'severe'});}});
+  LEX.high.forEach(w=>{if(t.includes(w)){s=Math.max(s,80);hits.push({w,t:'high'});}});
+  LEX.med.forEach(w=>{if(t.includes(w)){s=Math.max(s,52);hits.push({w,t:'med'});}});
+  if(/[A-Z]{4,}/.test(t))s=Math.min(100,s+8);
+  const ex=(t.match(/!/g)||[]).length;if(ex>2)s=Math.min(100,s+6);
+  return {score:Math.round(s),hits};}
+function col(s){return s>=70?'var(--red)':s>=40?'var(--amber)':'var(--green)';}
+
+/* ---------- 01 risk predictor ---------- */
+function setPred(c){document.getElementById('predIn').value=c.textContent;runPredict();}
+function runPredict(){const v=document.getElementById('predIn').value.trim();if(!v)return;
+  const r=scan(v),out=document.getElementById('predOut');out.style.display='block';
+  const arc=document.getElementById('gaugeArc'),C=490;
+  setTimeout(()=>{arc.style.strokeDashoffset=C-(C*r.score/100);},50);
+  let n=0;const num=document.getElementById('riskNum');const t=setInterval(()=>{n+=2;if(n>=r.score){num.textContent=r.score;clearInterval(t);}else num.textContent=n;},18);
+  num.style.color=col(r.score);
+  const en=document.body.dir==='ltr';const rs=document.getElementById('reasons');rs.innerHTML='';
+  const add=(ic,c,te)=>rs.insertAdjacentHTML('beforeend',`<div class="reason"><i data-lucide="${ic}" style="color:${c}"></i><span>${te}</span></div>`);
+  if(r.score>=70)add('octagon-alert','var(--red)',en?'High harm potential — contains language strongly linked to harassment or threats.':'احتمال ضرر مرتفع — تحتوي لغة مرتبطة بقوة بالمضايقة أو التهديد.');
+  else if(r.score>=40)add('alert-triangle','var(--amber)',en?'Moderate risk — tone may be received as hurtful or dismissive.':'خطر متوسط — قد تُستقبل النبرة كمؤذية أو متجاهلة.');
+  else add('shield-check','var(--green)',en?'Low risk — reads as respectful. Good to send.':'خطر منخفض — تبدو محترمة. مناسبة للإرسال.');
+  if(r.hits.length)add('scan-text','var(--vi-2)',(en?'Flagged terms: ':'مصطلحات موسومة: ')+[...new Set(r.hits.map(h=>h.w))].slice(0,4).join(', '));
+  if(/you (are|r)\b/i.test(v))add('user-x','var(--vi-2)',en?'Direct "you are…" framing tends to feel like a personal attack.':'صياغة «أنت…» المباشرة تُشعر غالبًا بهجوم شخصي.');
+  add('lightbulb','var(--cy)',en?'Tip: describe the behavior, not the person, and the risk drops sharply.':'نصيحة: صف السلوك لا الشخص، وينخفض الخطر بشكل حاد.');
+  lucide.createIcons();}
+
+/* ---------- 02 conversation analysis ---------- */
+function loadConvSample(){document.getElementById('convIn').value="A: hey did you even read the assignment?\nB: yeah why does it matter to you\nA: because you always mess everything up lol\nB: stop being so rude all the time\nA: maybe people would like you if you weren't useless";runConv();}
+function runConv(){const raw=document.getElementById('convIn').value.trim();if(!raw)return;
+  const lines=raw.split('\n').filter(l=>l.trim());let tox=0,esc=0,prev=0;
+  lines.forEach(l=>{const s=scan(l).score;tox=Math.max(tox,s);if(s>prev)esc+=(s-prev);prev=s;});
+  tox=Math.round(tox);esc=Math.min(100,Math.round(esc/Math.max(1,lines.length-1)*1.4+ (lines.length>3?12:0)));
+  const respect=Math.max(0,100-tox-Math.round(esc*.25));
+  const empathy=Math.max(0,100-tox-Math.round(esc*.4)- (/(\bsorry\b|\bunderstand\b|\bfeel\b)/i.test(raw)?-15:10));
+  const m=document.getElementById('convMetrics');m.style.display='grid';
+  const row=(lbl,lblAr,val,inv)=>{const c=inv?col(100-val):col(val);return `<div class="metric"><div class="mh"><span class="en">${lbl}</span><span class="ar">${lblAr}</span><b style="color:${c}">${val}%</b></div><div class="bar"><i style="width:0;background:${c}" data-w="${val}"></i></div></div>`;};
+  m.innerHTML=row('Toxicity','السمّية',tox,false)+row('Respect','الاحترام',respect,true)+row('Empathy','التعاطف',empathy,true)+row('Escalation','التصعيد',esc,false);
+  setTimeout(()=>m.querySelectorAll('.bar i').forEach(i=>i.style.width=i.dataset.w+'%'),60);
+  const sum=document.getElementById('convSummary');sum.style.display='flex';
+  const en=document.body.dir==='ltr';
+  let verdict=tox>=70?(en?'This thread shows escalating hostility. Intervention or a cool-down is advised.':'يُظهر هذا الخيط عدائية متصاعدة. يُنصح بالتدخل أو فترة تهدئة.'):tox>=40?(en?'Tension is rising. A respectful reset could prevent escalation.':'التوتر يتصاعد. إعادة ضبط محترمة قد تمنع التصعيد.'):(en?'This conversation looks healthy and respectful.':'تبدو هذه المحادثة صحية ومحترمة.');
+  sum.innerHTML=`<i data-lucide="${tox>=40?'message-square-warning':'message-square-heart'}" style="color:${col(tox)}"></i><span>${verdict}</span>`;
+  lucide.createIcons();}
+
+/* ---------- 03 safe writing assistant ---------- */
+const REW={'stupid':'mistaken','idiot':'person','worthless':'capable','loser':'person','pathetic':'struggling','ugly':'unique','freak':'different','moron':'person','dumb':'still learning','useless':'still developing skills','shut up':'please let me finish','go away':'I need some space','hate you':'disagree with you','nobody likes you':'not everyone may understand you','everyone hates you':'not everyone agrees with you','no one cares':'your view matters too'};
+function softer(t){let o=t;Object.entries(REW).forEach(([b,g])=>{o=o.replace(new RegExp('\\b'+b.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b','gi'),g);});
+  o=o.replace(/you are so/gi,'I feel that you might be').replace(/you('re| are)/gi,'I think you might be').replace(/!+/g,'.');
+  o=o.replace(/\bI hate this\b/gi,'I find this frustrating');
+  return o.charAt(0).toUpperCase()+o.slice(1);}
+let ghTimer;
+function liveAssist(){clearTimeout(ghTimer);ghTimer=setTimeout(()=>{const v=document.getElementById('assistIn').value;const r=scan(v);const g=document.getElementById('ghost');
+  if(v.trim()&&r.score>=35){document.getElementById('ghostText').textContent=softer(v);g.classList.add('show');}else g.classList.remove('show');},280);}
+function applyGhost(){document.getElementById('assistIn').value=document.getElementById('ghostText').textContent;document.getElementById('ghost').classList.remove('show');}
+
+/* ---------- 08 emotional impact ---------- */
+function runEmotion(){const v=document.getElementById('emoIn').value.trim();if(!v)return;const t=' '+v.toLowerCase()+' ';
+  const base=scan(v).score;
+  let humil=Math.min(100,base+ (/(embarrass|laugh|everyone saw|ashamed|loser|stupid)/.test(t)?22:-8));
+  let anx=Math.min(100,base+ (/(threat|find you|coming|watch|always|never|everyone)/.test(t)?16:-10));
+  let excl=Math.min(100, (/(nobody|no one|everyone|don't belong|not wanted|go away|leave|without you)/.test(t)?70:18)+(base>50?15:0));
+  humil=Math.max(0,humil);anx=Math.max(0,anx);excl=Math.max(0,excl);
+  const o=document.getElementById('emoOut');o.style.display='grid';
+  const card=(lbl,ar,val)=>`<div class="metric"><div class="mh"><span class="en">${lbl}</span><span class="ar">${ar}</span><b style="color:${col(val)}">${val}%</b></div><div class="bar"><i style="width:0;background:${col(val)}" data-w="${val}"></i></div></div>`;
+  o.innerHTML=card('Humiliation risk','خطر الإذلال',Math.round(humil))+card('Anxiety trigger','إثارة القلق',Math.round(anx))+card('Exclusion probability','احتمال الإقصاء',Math.round(excl));
+  setTimeout(()=>o.querySelectorAll('.bar i').forEach(i=>i.style.width=i.dataset.w+'%'),60);}
+
+/* ---------- 04 moderator simulator ---------- */
+const MOD=[
+ {msg:{en:'"Honestly your presentation was kind of boring, you lost me halfway."',ar:'«بصراحة عرضك كان مملًا نوعًا ما، فقدتني في المنتصف.»'},ctx:{en:'Public comment on a class project',ar:'تعليق عام على مشروع صفي'},ai:'warn',reason:{en:'Blunt but not abusive — criticism of work, not the person. A nudge to be kinder fits.',ar:'صريح لكنه ليس مسيئًا — نقد للعمل لا للشخص. تنبيه للّطف مناسب.'},tag:'low'},
+ {msg:{en:'"Nobody in this school can stand you. Just disappear already."',ar:'«لا أحد في هذه المدرسة يطيقك. اختفِ فحسب.»'},ctx:{en:'Direct message to a student',ar:'رسالة مباشرة لطالب'},ai:'delete',reason:{en:'Targeted exclusion + "disappear" implies self-harm encouragement. Remove and escalate.',ar:'إقصاء مستهدف + «اختفِ» يلمّح لتشجيع إيذاء النفس. احذف وصعّد.'},tag:'severe'},
+ {msg:{en:'"I disagree with your take on the match, here\'s why I think you\'re wrong."',ar:'«أختلف مع رأيك في المباراة، وإليك لماذا أعتقد أنك مخطئ.»'},ctx:{en:'Reply in a sports thread',ar:'رد في نقاش رياضي'},ai:'allow',reason:{en:'Healthy disagreement, no attack on the person. Allow.',ar:'اختلاف صحي دون هجوم على الشخص. اسمح.'},tag:'safe'},
+ {msg:{en:'"Send me a pic or I\'ll post your address for everyone to see."',ar:'«أرسل صورة وإلا سأنشر عنوانك ليراه الجميع.»'},ctx:{en:'Private chat, minor involved',ar:'محادثة خاصة، يشمل قاصرًا'},ai:'delete',reason:{en:'Coercion + doxxing threat targeting a minor. Remove immediately and report.',ar:'ابتزاز + تهديد بكشف العنوان يستهدف قاصرًا. احذف فورًا وأبلغ.'},tag:'severe'},
+ {msg:{en:'"lol that haircut is a choice 😂 brave of you"',ar:'«ههه قصة الشعر دي اختيار 😂 شجاع منك»'},ctx:{en:'Comment on a selfie',ar:'تعليق على صورة شخصية'},ai:'warn',reason:{en:'Veiled mockery dressed as a joke. Warn — it can sting and invite pile-ons.',ar:'سخرية مبطّنة بثوب مزحة. حذّر — قد تؤذي وتدعو لتنمّر جماعي.'},tag:'low'}
+];
+let mi=0,mscore=0;
+function loadMod(){const c=MOD[mi],en=document.body.dir==='ltr';
+  document.getElementById('caseNum').textContent=mi+1;
+  document.getElementById('modMsg').textContent=en?c.msg.en:c.msg.ar;
+  document.getElementById('modContext').textContent=en?c.ctx.en:c.ctx.ar;
+  const tg=document.getElementById('modCtxTag');
+  const TC={severe:['rgba(255,77,109,.13)','var(--red)'],low:['rgba(251,191,36,.13)','var(--amber)'],safe:['rgba(52,211,153,.13)','var(--green)']}[c.tag];
+  tg.style.background=TC[0];tg.style.color=TC[1];
+  tg.textContent=c.tag.toUpperCase();
+  document.getElementById('modVerdict').classList.remove('show');
+  document.querySelectorAll('.mod-btn').forEach(b=>b.style.opacity='1');}
+function modDecide(a){const c=MOD[mi],en=document.body.dir==='ltr';const map={delete:{en:'Delete',ar:'حذف'},warn:{en:'Warn',ar:'تحذير'},allow:{en:'Allow',ar:'سماح'}};
+  document.getElementById('vYou').textContent=en?map[a].en:map[a].ar;
+  document.getElementById('vAi').textContent=en?map[c.ai].en:map[c.ai].ar;
+  document.getElementById('vReason').textContent=en?c.reason.en:c.reason.ar;
+  const v=document.getElementById('modVerdict'),pill=document.getElementById('vMatch');
+  const match=a===c.ai;if(match){mscore++;pill.style.background='rgba(52,211,153,.13)';pill.style.color='var(--green)';pill.textContent=en?'✓ Matched the AI':'✓ طابقت الذكاء';}
+  else{pill.style.background='rgba(251,191,36,.13)';pill.style.color='var(--amber)';pill.textContent=en?'△ Different from the AI — both views are worth weighing':'△ يختلف عن الذكاء — كلا الرأيين يستحق التأمل';}
+  document.getElementById('modScore').textContent=mscore;
+  v.classList.add('show');}
+function modNext(){mi=(mi+1)%MOD.length;loadMod();go('moderator');}
+loadMod();
+
+/* ---------- 10 platform comparison ---------- */
+const PLAT=[
+ {n:'TikTok',c:'#000',rep:3,tools:4,mod:3,rate:69},
+ {n:'Instagram',c:'#E1306C',rep:4,tools:4,mod:3,rate:64},
+ {n:'Snapchat',c:'#FFFC00',tc:'#000',rep:3,tools:3,mod:2,rate:54},
+ {n:'X',c:'#1d1d1f',rep:2,tools:3,mod:2,rate:49},
+ {n:'YouTube',c:'#FF0000',rep:4,tools:3,mod:3,rate:52},
+ {n:'Facebook',c:'#1877F2',rep:4,tools:5,mod:4,rate:37}
+];
+const dots=n=>'<span class="rate">'+[1,2,3,4,5].map(i=>`<i class="${i<=n?'on':''}"></i>`).join('')+'</span>';
+document.getElementById('cmpBody').innerHTML=PLAT.map(p=>`<tr><td><span class="plat"><span class="pd" style="background:${p.c};color:${p.tc||'#fff'}">${p.n[0]}</span>${p.n}</span></td><td>${dots(p.rep)}</td><td>${dots(p.tools)}</td><td>${dots(p.mod)}</td><td><b style="font-family:var(--f-mono);color:${col(p.rate)}">${p.rate}%</b></td></tr>`).join('');
+
+/* ---------- 12 case studies ---------- */
+const CASES=[
+ {sev:'High',sc:'var(--red)',t:{en:'The group-chat pile-on',ar:'الهجوم الجماعي في المجموعة'},why:{en:'A class group chat turns on one student with a stream of mocking messages and an exclusionary poll. The harm is the coordinated repetition and public audience, not any single message.',ar:'تتحول دردشة الصف ضد طالب واحد بسيل من رسائل السخرية واستطلاع إقصائي. الضرر في التكرار المنسّق والجمهور العام، لا في رسالة واحدة.'},b:{en:'"Vote: should we kick [name] from the trip? 😂 react 👍 if yes"',ar:'«تصويت: هل نطرد [الاسم] من الرحلة؟ 😂 تفاعل 👍 إذا نعم»'},a:{en:'Shut the poll down, speak to the student privately, and remind the group that exclusion games aren\'t okay here.',ar:'أوقف الاستطلاع، تحدث مع الطالب على انفراد، وذكّر المجموعة بأن ألعاب الإقصاء غير مقبولة هنا.'}},
+ {sev:'Severe',sc:'var(--red)',t:{en:'Image-based coercion',ar:'الابتزاز بالصور'},why:{en:'A threat to share private or fabricated images unless demands are met. This is coercion and, with a minor, a serious safety issue requiring adults and reporting — never compliance.',ar:'تهديد بنشر صور خاصة أو مفبركة ما لم تُلبَّ المطالب. هذا ابتزاز، ومع قاصر مسألة أمان خطيرة تستلزم البالغين والإبلاغ — لا الامتثال أبدًا.'},b:{en:'"Do what I say or these pics go to everyone you know."',ar:'«افعل ما أقول وإلا تصل هذه الصور لكل من تعرفه.»'},a:{en:'Do not comply or reply. Screenshot, block, tell a trusted adult, and report to the platform and, if needed, authorities.',ar:'لا تمتثل ولا ترد. التقط صورة، احظر، أخبر بالغًا موثوقًا، وأبلغ المنصة، وعند الحاجة الجهات المختصة.'}},
+ {sev:'Moderate',sc:'var(--amber)',t:{en:'The "just joking" insult',ar:'إهانة «مجرد مزحة»'},why:{en:'Repeated "jokes" about someone\'s appearance or accent. Humor framing doesn\'t cancel the cumulative humiliation, especially in front of an audience.',ar:'«مزحات» متكررة عن مظهر شخص أو لهجته. إطار الفكاهة لا يلغي الإذلال المتراكم، خصوصًا أمام جمهور.'},b:{en:'"Here he goes talking again 😂 someone get a translator lol"',ar:'«ها هو يتكلم مجددًا 😂 أحضروا مترجمًا»'},a:{en:'Name the pattern kindly: "Jokes that target how someone speaks aren\'t funny here." Offer the target private support.',ar:'سمِّ النمط بلطف: «المزح الذي يستهدف طريقة كلام شخص غير مقبول هنا.» وقدّم للهدف دعمًا خاصًا.'}}
+];
+document.getElementById('caseList').innerHTML=CASES.map((c,i)=>`<div class="case glass" id="case${i}"><div class="case-top" onclick="document.getElementById('case${i}').classList.toggle('open')"><h4><span class="en">${c.t.en}</span><span class="ar">${c.t.ar}</span></h4><span class="case-sev" style="background:${c.sc.replace('var(--red)','rgba(255,77,109,.13)').replace('var(--amber)','rgba(251,191,36,.13)')};color:${c.sc}">${c.sev}</span></div><div class="case-body"><div class="case-inner"><p style="color:var(--txt-2);font-size:.92rem"><span class="en">${c.why.en}</span><span class="ar">${c.why.ar}</span></p><div class="ba"><div class="ba-box b"><div class="bl"><span class="en">Harmful content</span><span class="ar">محتوى ضار</span></div><span class="en">${c.b.en}</span><span class="ar">${c.b.ar}</span></div><div class="ba-box a"><div class="bl"><span class="en">Better response</span><span class="ar">استجابة أفضل</span></div><span class="en">${c.a.en}</span><span class="ar">${c.a.ar}</span></div></div></div></div></div>`).join('');
+
+/* ---------- hubs ---------- */
+function hub(btn,id){document.querySelectorAll('.hub-tab').forEach(t=>t.classList.remove('on'));btn.classList.add('on');document.querySelectorAll('.hub-pane').forEach(p=>p.classList.remove('on'));document.getElementById('hub-'+id).classList.add('on');}
+
+/* ---------- heatmap ---------- */
+(function(){const hm=document.getElementById('heatmap');const cols=['rgba(34,211,238,.15)','rgba(34,211,238,.4)','rgba(124,92,255,.55)','rgba(251,94,126,.7)','rgba(255,77,109,.95)'];
+ for(let i=0;i<96;i++){const lvl=Math.floor(Math.pow(Math.random(),1.6)*5);const d=document.createElement('div');d.className='hm-cell';d.style.background=cols[lvl];d.title='intensity '+(lvl+1);hm.appendChild(d);}})();
+
+/* ---------- charts ---------- */
+let CH={};
+function buildCharts(){const dark=document.body.dataset.theme==='dark';const tc=dark?'#9fb0d4':'#475780';const grid=dark?'rgba(255,255,255,.06)':'rgba(0,0,0,.06)';
+ Object.values(CH).forEach(c=>c&&c.destroy());Chart.defaults.font.family="'Space Grotesk',sans-serif";Chart.defaults.color=tc;
+ const sev=document.getElementById('sevChart');if(sev)CH.sev=new Chart(sev,{type:'doughnut',data:{labels:['Harassment','Exclusion','Hate speech','Threats','Image abuse'],datasets:[{data:[38,24,18,12,8],backgroundColor:['#7c5cff','#22d3ee','#fb5e7e','#ff4d6d','#fbbf24'],borderWidth:0}]},options:{plugins:{legend:{position:'bottom',labels:{padding:14,boxWidth:12}}},cutout:'62%',maintainAspectRatio:false}});
+ const tr=document.getElementById('trendChart');if(tr)CH.tr=new Chart(tr,{type:'line',data:{labels:['J','F','M','A','M','J','J','A','S','O','N','D'],datasets:[{label:'Reported',data:[31,34,33,38,42,40,45,48,46,50,49,52],borderColor:'#fb5e7e',backgroundColor:'rgba(251,94,126,.12)',fill:true,tension:.4,pointRadius:0,borderWidth:2.5},{label:'AI-prevented',data:[10,14,18,21,26,28,31,34,37,40,43,46],borderColor:'#34d399',backgroundColor:'rgba(52,211,153,.1)',fill:true,tension:.4,pointRadius:0,borderWidth:2.5}]},options:{plugins:{legend:{position:'bottom',labels:{boxWidth:12,padding:14}}},scales:{y:{grid:{color:grid},ticks:{color:tc}},x:{grid:{display:false},ticks:{color:tc}}},maintainAspectRatio:false}});
+ const pl=document.getElementById('platChart');if(pl)CH.pl=new Chart(pl,{type:'bar',data:{labels:['TikTok','Instagram','Snapchat','YouTube','X','Facebook'],datasets:[{data:[69,64,54,52,49,37],backgroundColor:['#22d3ee','#7c5cff','#fbbf24','#fb5e7e','#06b6d4','#34d399'],borderRadius:8}]},options:{plugins:{legend:{display:false}},scales:{y:{grid:{color:grid},ticks:{color:tc},max:80},x:{grid:{display:false},ticks:{color:tc}}},maintainAspectRatio:false}});}
+setTimeout(buildCharts,300);
+</script>
+</body>
+</html>
